@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "372920954750",
+    "firebase_url": "https://prointeract-af821.firebaseio.com",
+    "project_id": "prointeract-af821",
+    "storage_bucket": "prointeract-af821.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372920954750:android:2a98697da585bc17",
+        "android_client_info": {
+          "package_name": "com.orion.prointeractofficer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "372920954750-kqnrc6qsatec4rq8bq4rsfao0g7k81fh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.orion.prointeractofficer",
+            "certificate_hash": "1b87d79d906523a10a2f974397845523591de7d2"
+          }
+        },
+        {
+          "client_id": "372920954750-f3tq7trh6ips4vjqa5e74tpcnictn5ae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_8n_t1X4Q7otqNXtd8XZoEFHv7rpYuBs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "372920954750-f3tq7trh6ips4vjqa5e74tpcnictn5ae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
