@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         startActivityForResult(
+                //move to another activity file
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("RESULT", "onActivityResult: called");    //not called? Why?
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
@@ -66,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
             signIn();
         } else {
             String dispName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString();
-            Snackbar.make(main_layout, "Welcome back, " + dispName, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(main_layout, "Signed in as " + dispName, Snackbar.LENGTH_SHORT).show();
+
         }
 
     }
