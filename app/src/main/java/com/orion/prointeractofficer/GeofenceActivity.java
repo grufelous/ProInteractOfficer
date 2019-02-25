@@ -16,6 +16,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GeofenceActivity extends AppCompatActivity {
@@ -27,6 +28,15 @@ public class GeofenceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geofence);
+
+        // set intent to null
+        geofencePendingIntent = null;
+
+        // initialize geofence list
+        geofencesList = new ArrayList<>();
+
+        // create geofence instance
+        geofencingClient = getGeofencingClientInstance();
     }
 
     // setup geofence instance
