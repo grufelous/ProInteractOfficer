@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">ProInteract Officer</string>
+    <string name="title_activity_officer">Officer</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+
+
+    <string name="launch_login_button_txt">Let\'s Start</string>
+    <string name="login_btn">Login</string>
+    <string name="signup_btn">Create account</string>
 </resources>

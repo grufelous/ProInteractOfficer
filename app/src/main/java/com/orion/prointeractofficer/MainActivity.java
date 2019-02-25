@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -57,20 +58,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    Button letStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         main_layout = findViewById(R.id.main_layout);
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+
+        letStart = findViewById(R.id.launchLoginBtn);
+
+        /*if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             Snackbar.make(main_layout, "Not logged in", Snackbar.LENGTH_SHORT).show();
             signIn();
         } else {
             String dispName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString();
             Snackbar.make(main_layout, "Signed in as " + dispName, Snackbar.LENGTH_SHORT).show();
-
-        }
+        }*/
 
     }
 }
