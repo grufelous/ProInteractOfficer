@@ -4,7 +4,7 @@
     package="com.orion.prointeractofficer">
 
     <!-- permission for working with geofences -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <dist:module dist:instant="true" />
 
@@ -15,7 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GeofenceActivity"></activity>
+        <service
+            android:name=".GeofenceTransitionsIntentService"
+            android:exported="false"></service>
+
+        <activity android:name=".GeofenceActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +29,7 @@
         </activity>
         <activity
             android:name=".OfficerAuthActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
