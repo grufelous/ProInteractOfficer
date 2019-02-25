@@ -9,6 +9,8 @@ import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.List;
+
 public class GeofenceActivity extends AppCompatActivity {
     private GeofencingClient geofencingClient;
 
@@ -18,7 +20,7 @@ public class GeofenceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_geofence);
     }
 
-    // set-up geofence instance
+    // setup geofence instance
     private GeofencingClient getGeofencingClientInstance() {
         return LocationServices.getGeofencingClient(this);
     }
@@ -33,10 +35,10 @@ public class GeofenceActivity extends AppCompatActivity {
     }
 
     // setup initial triggers
-    private GeofencingRequest getGeofencingRequest(Geofence geofence) {
+    private GeofencingRequest getGeofencingRequest(List<Geofence> geofencesList) {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofence(geofence);
+        builder.addGeofences(geofencesList);
         return builder.build();
     }
 }
