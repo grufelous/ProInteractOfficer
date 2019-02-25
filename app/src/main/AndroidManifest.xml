@@ -24,7 +24,8 @@
             android:parentActivityName=".MainActivity">
         </activity>
 
-        <activity android:name=".OfficerSetupActivity">
+        <activity android:name=".OfficerSetupActivity"
+            android:label="Edit profile">
         </activity>
     </application>
 

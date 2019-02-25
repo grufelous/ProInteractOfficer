@@ -33,10 +33,12 @@ public class OfficerAuthActivity extends AppCompatActivity {
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    Log.d("SIGNUP", "onComplete: called");
                     if(task.isSuccessful()) {
+                        Log.d("SIGNUP", "onComplete: called");
                         mAuth = FirebaseAuth.getInstance();
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(OfficerAuthActivity.this, "Signed up as " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                        launchSetupUI(user);
                     } else {
                         //Snackbar.make(officerAuthLayout, "Something went wrong", Snackbar.LENGTH_LONG).show();
                     }
@@ -51,12 +53,17 @@ public class OfficerAuthActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         mAuth = FirebaseAuth.getInstance();
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(OfficerAuthActivity.this, "Signed in as " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                        launchSetupUI(user);
                     } else {
                         //Snackbar.make(officerAuthLayout, "Login issue", Snackbar.LENGTH_LONG).show();
                     }
                 }
             });
+    }
+    private void launchSetupUI(FirebaseUser user) {
+        Intent userForSetup = new Intent(this, OfficerSetupActivity.class);
+        userForSetup.putExtra("uid", user.getUid());
+        startActivity(userForSetup);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +75,7 @@ public class OfficerAuthActivity extends AppCompatActivity {
         } else {
             //mAuth.createUserWithEmailAndPassword()
         }*/
-        super.onCreate(savedInstanceState);
+        //super.onCreate(savedInstanceState);
         setContentView(R.layout.officer_auth_layout);
 
         emailInputField = findViewById(R.id.emailInputField);

@@ -7,6 +7,43 @@
     android:layout_height="match_parent"
     android:paddingLeft="32dp"
     android:paddingRight="32dp"
+
     tools:context=".OfficerSetupActivity">
+    <TextView
+        android:id="@+id/setupIntroText"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="48dp
+"/>
+
+    <EditText
+        android:id="@+id/firstNameInputField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/first_name_txt"
+        android:layout_below="@id/setupIntroText"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="56dp"
+        />
+    <EditText
+        android:id="@+id/secondNameInputField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/second_name_txt"
+        android:layout_marginStart="48dp"
+        android:layout_below="@id/firstNameInputField"
+
+        />
+    <Button
+        android:id="@+id/updateProfileBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/secondNameInputField"
+        android:layout_marginTop="28dp"
+        android:layout_centerHorizontal="true"
+        android:onClick="updateOfficerInfo"
+        android:text="@string/update_btn" />
+
 
 </RelativeLayout>
