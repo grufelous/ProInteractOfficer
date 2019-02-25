@@ -1,5 +1,7 @@
 package com.orion.prointeractofficer;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.CpuUsageInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import java.util.List;
 
 public class GeofenceActivity extends AppCompatActivity {
     private GeofencingClient geofencingClient;
+    private PendingIntent geofencePendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,5 +43,15 @@ public class GeofenceActivity extends AppCompatActivity {
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
         builder.addGeofences(geofencesList);
         return builder.build();
+    }
+
+    // geofence pending intent
+    private PendingIntent getGeofencePendingIntent() {
+        if(geofencePendingIntent != null) {
+            return geofencePendingIntent;
+        }
+        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
+        geofencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return geofencePendingIntent;
     }
 }
