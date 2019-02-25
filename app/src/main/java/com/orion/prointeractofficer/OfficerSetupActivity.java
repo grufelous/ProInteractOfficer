@@ -1,0 +1,11 @@
+package com.orion.prointeractofficer;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+public class OfficerSetupActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+}

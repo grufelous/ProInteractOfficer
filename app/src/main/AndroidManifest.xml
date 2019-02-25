@@ -23,6 +23,9 @@
         <activity android:name=".OfficerAuthActivity"
             android:parentActivityName=".MainActivity">
         </activity>
+
+        <activity android:name=".OfficerSetupActivity">
+        </activity>
     </application>
 
 </manifest>

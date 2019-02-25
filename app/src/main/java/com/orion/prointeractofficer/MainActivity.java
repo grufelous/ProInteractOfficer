@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "launchAuthActivity: launching next activity");
         startActivity(authIntent);
     }
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
