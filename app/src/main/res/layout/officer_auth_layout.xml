@@ -7,23 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".OfficerAuthActivity">
 
-    <Button
-        android:id="@+id/button"
-        style="@style/FirebaseUI.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="86dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="59dp"
-        android:layout_marginBottom="261dp"
-        android:text="@string/login_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
-
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/emailInputField"
         android:layout_width="299dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
@@ -32,13 +17,13 @@
         android:layout_marginBottom="36dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/editText2"
+        app:layout_constraintBottom_toTopOf="@+id/passwordInputField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/passwordInputField"
         android:layout_width="302dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
@@ -48,21 +33,38 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/emailInputField" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="86dp"
-        android:layout_marginBottom="261dp"
-        android:background="@color/browser_actions_bg_grey"
-        android:elevation="0dp"
-        android:text="@string/signup_btn"
+    <LinearLayout
+        android:layout_width="395dp"
+        android:layout_height="108dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="172dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordInputField">
+
+        <Button
+            android:id="@+id/loginBtn"
+            style="@style/FirebaseUI.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login_btn"
+            tools:layout_editor_absoluteX="267dp"
+            tools:layout_editor_absoluteY="521dp" />
+
+        <Button
+            android:id="@+id/signupBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/browser_actions_bg_grey"
+            android:elevation="0dp"
+            android:text="@string/signup_btn"
+            tools:layout_editor_absoluteX="34dp"
+            tools:layout_editor_absoluteY="521dp" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>
