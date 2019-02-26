@@ -46,6 +46,17 @@ public class GeofenceActivity extends AppCompatActivity {
         geofencingClient = getGeofencingClientInstance();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(!checkPermissions()) {
+            requestPermissions();
+        } else {
+            addGeofence();
+        }
+    }
+
     // setup geofence instance
     private GeofencingClient getGeofencingClientInstance() {
         return LocationServices.getGeofencingClient(this);
