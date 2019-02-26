@@ -1,5 +1,6 @@
 <resources>
     <string-array name="aicte_department_array">
+        <item>NA</item>
         <item>Administrative Bureau</item>
         <item>Academic Bureau</item>
         <item>Engineering and Tech Bureau</item>

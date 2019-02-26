@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/skillNameRow"
+        android:text="Skill"
+        android:paddingLeft="32dp"
+        />
+    <Button
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:shadowRadius="4dp"
+        android:padding="0dp"
+        android:layout_marginRight="32dp"
+        android:text="x"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/skillRemoveBtn"
+        android:layout_toEndOf="@id/skillNameRow"
+        />
+</RelativeLayout>

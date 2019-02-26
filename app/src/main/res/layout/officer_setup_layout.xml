@@ -19,15 +19,23 @@
         android:layout_below="@id/secondNameInputField"
         />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <!--<de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/profile_image"
+        android:id="@+id/profile_imageC"
         android:layout_width="146dp"
         android:layout_height="146dp"
         android:layout_marginTop="32dp"
         android:src="@drawable/profile"
         app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"/>
+        app:civ_border_color="#FF000000"/>-->
+    <ImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="146dp"
+        android:layout_height="146dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/profile" />
+
 
     <EditText
         android:id="@+id/firstNameInputField"
@@ -85,22 +93,22 @@
         android:layout_below="@id/aboutTextInputField"
         />
 
-    <!--<Spinner
+    <Spinner
         android:id="@+id/departmentSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/aboutTextInputField"
         android:layout_toEndOf="@id/departmentLabel"
-        android:entries="@string/aicte_department_array"
-        android:spinnerMode="dropdown" />-->
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/skillsScroller"
+        />
+    <ListView
+        android:id="@+id/skillsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/departmentLabel"
         android:layout_marginTop="28dp"
         android:layout_above="@id/updateProfileBtn"
-        />
+        >
+
+    </ListView>
 
 </RelativeLayout>

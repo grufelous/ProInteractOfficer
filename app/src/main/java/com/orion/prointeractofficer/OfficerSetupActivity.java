@@ -7,12 +7,18 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,20 +27,18 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
+import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-public class OfficerSetupActivity extends AppCompatActivity {
+public class OfficerSetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference rtdbSetup;
     EditText firstNameInput, secondNameInput, aboutTextInputField;
     TextView setupIntroText;
     Spinner departmentSpinner;
-
-    CircleImageView circularProfileImageView;
+    /*Circle*/ ImageView circularProfileImageView;
+    ListView skillListView;
+    ArrayAdapter<String> skillListAdapter;
 
     protected void updateOfficerInfo(View view) {
         user = mAuth.getCurrentUser();
@@ -46,7 +50,7 @@ public class OfficerSetupActivity extends AppCompatActivity {
                 setupIntroText.setText("Hi, " + user.getDisplayName());
             }
         });
-        rtdbSetup.child("officer").child(user.getUid()).child("about").setValue(setupIntroText.getText().toString());
+        rtdbSetup.child("officer").child(user.getUid()).child("about").setValue(aboutTextInputField.getText().toString());
 
     }
 
@@ -54,15 +58,18 @@ public class OfficerSetupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //super.onCreate(savedInstanceState);
         setContentView(R.layout.officer_setup_layout);
         firstNameInput = findViewById(R.id.firstNameInputField);
         secondNameInput = findViewById(R.id.secondNameInputField);
         setupIntroText = findViewById(R.id.setupIntroText);
         circularProfileImageView = findViewById(R.id.profile_image);
         aboutTextInputField = findViewById(R.id.aboutTextInputField);
-        //departmentSpinner = findViewById(R.id.departmentSpinner);
+        departmentSpinner = findViewById(R.id.departmentSpinner);
         rtdbSetup = FirebaseDatabase.getInstance().getReference();
+        skillListView = findViewById(R.id.skillsList);
+
+        //ArrayList<String> skillsList = new ArrayList<String>();
+        //skillListAdapter = new ArrayAdapter<String>(this, R.layout.skill_row, skillsList);
 
         //Intent userUidIntent = getIntent();
         //Log.d("UIDUser", "onCreate: " + userUidIntent.getStringExtra("uid"));
@@ -79,13 +86,14 @@ public class OfficerSetupActivity extends AppCompatActivity {
 
         if(user.getPhotoUrl() != null) {
             Log.d("UPIC", "onCreate: User logged in has picture: " + user.getPhotoUrl());
+            //@TODO: loads an empty image. Fix the missing resource issue. Also ensure circle cropping.
+            Glide.with(this).load(user.getPhotoUrl()).apply(RequestOptions.centerCropTransform()).into(circularProfileImageView);
             //circularProfileImageView.setImageURI(user.getPhotoUrl());
         }
-        /*ArrayAdapter<CharSequence> departmentAdapter = ArrayAdapter.createFromResource(this, R.array.aicte_department_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> departmentAdapter = ArrayAdapter.createFromResource(this, R.array.aicte_department_array, android.R.layout.simple_spinner_item);
         departmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        departmentSpinner.setAdapter(departmentAdapter);*/
-
-
+        departmentSpinner.setAdapter(departmentAdapter);
+        departmentSpinner.setOnItemSelectedListener(this);
     }
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent imageReturnedIntent) {
@@ -111,5 +119,17 @@ public class OfficerSetupActivity extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String dept = parent.getItemAtPosition(position).toString();
+        Log.d("item", "onItemSelected: selected " + dept);
+        rtdbSetup.child("officer").child(user.getUid()).child("department").setValue(dept);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
