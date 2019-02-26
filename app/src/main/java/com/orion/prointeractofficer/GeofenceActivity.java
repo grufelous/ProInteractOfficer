@@ -25,12 +25,16 @@ public class GeofenceActivity extends AppCompatActivity {
     private PendingIntent geofencePendingIntent;
     private List<Geofence> geofencesList;
 
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 42;
     private static final String TAG = GeofenceActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geofence);
+
+        // log information that intent is created
+        Log.i(TAG, "onCreate: ");
 
         // set intent to null
         geofencePendingIntent = null;
@@ -102,5 +106,29 @@ public class GeofenceActivity extends AppCompatActivity {
                         Log.d(TAG, "Failed to load geofence with error\n" + e.getStackTrace());
                     }
                 });
+    }
+
+    // check location permissions
+    private boolean checkPermissions() {
+        int permission = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+
+        return permission == PackageManager.PERMISSION_GRANTED;
+    }
+
+    // request location permissions
+    private void requestPermissions() {
+        boolean shouldShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if(shouldShowRationale) {
+            // TODO
+            // user denied
+            // request permission again
+        } else {
+            Log.i(TAG, "requestPermissions: ");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_PERMISSIONS_REQUEST_CODE);
+        }
     }
 }
