@@ -14,36 +14,93 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_marginTop="48dp"
-        android:layout_marginStart="48dp
-"/>
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/profile_image"
+        android:layout_below="@id/secondNameInputField"
+        />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="146dp"
+        android:layout_height="146dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/profile"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"/>
 
     <EditText
         android:id="@+id/firstNameInputField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/first_name_txt"
-        android:layout_below="@id/setupIntroText"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="56dp"
+        android:layout_toEndOf="@id/profile_image"
+        android:width="186dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="54dp"
         />
     <EditText
         android:id="@+id/secondNameInputField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/second_name_txt"
-        android:layout_marginStart="48dp"
+        android:width="186dp"
+        android:layout_marginStart="16dp"
         android:layout_below="@id/firstNameInputField"
-
+        android:layout_toEndOf="@id/profile_image"
         />
     <Button
         android:id="@+id/updateProfileBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/secondNameInputField"
+        android:layout_alignParentBottom="true"
         android:layout_marginTop="28dp"
         android:layout_centerHorizontal="true"
         android:onClick="updateOfficerInfo"
         android:text="@string/update_btn" />
+    <View
+        android:id="@+id/profileDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/profile_image"
+        android:background="?android:attr/listDivider" />
+    <EditText
+        android:id="@+id/aboutTextInputField"
+        android:layout_width="match_parent"
+        android:hint="Bio"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/profileDivider"
+        android:lines="3"
+        android:maxLines="5"
+        android:tooltipText="About you"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Department"
+        android:layout_marginTop="4dp"
+        android:id="@+id/departmentLabel"
+        android:layout_below="@id/aboutTextInputField"
+        />
 
+    <!--<Spinner
+        android:id="@+id/departmentSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aboutTextInputField"
+        android:layout_toEndOf="@id/departmentLabel"
+        android:entries="@string/aicte_department_array"
+        android:spinnerMode="dropdown" />-->
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/skillsScroller"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/departmentLabel"
+        android:layout_marginTop="28dp"
+        android:layout_above="@id/updateProfileBtn"
+        />
 
 </RelativeLayout>
