@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -23,6 +24,8 @@ public class GeofenceActivity extends AppCompatActivity {
     private GeofencingClient geofencingClient;
     private PendingIntent geofencePendingIntent;
     private List<Geofence> geofencesList;
+
+    private static final String TAG = GeofenceActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class GeofenceActivity extends AppCompatActivity {
                 .setRequestId(geofenceId)
                 .setCircularRegion(geofencePointLongitude, geofencePointLatitude, geofencePointRadius)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                .setExpirationDuration(60*1000)
                 .build();
     }
 
@@ -88,12 +92,14 @@ public class GeofenceActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // yay! geofence added!
+                        Log.d(TAG, "Geofence loaded");
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // :(
+                        Log.d(TAG, "Failed to load geofence with error\n" + e.getStackTrace());
                     }
                 });
     }
