@@ -5,6 +5,7 @@
 
     <!-- permission for working with geofences -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <dist:module dist:instant="true" />
 
@@ -16,14 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <receiver
-            android:name=".GeofenceBroadcastReceiver"
+            android:name="GeofenceBroadcastReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true">
+        </receiver>
 
         <service
             android:name=".GeofenceTransitionsIntentService"
             android:exported="true"
-            android:enabled="true" />
+            android:permission="android.permission.BIND_JOB_SERVICE" ></service>
 
         <activity android:name=".GeofenceActivity" />
         <activity android:name=".MainActivity">
