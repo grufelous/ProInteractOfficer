@@ -19,13 +19,13 @@ import java.util.List;
  * <p>
  * TODO: Customize class - update intent actions and extra parameters.
  */
-public class GeofenceTransitionsIntentService extends JobIntentService {
+public class GeofenceTransitionsJobIntentService extends JobIntentService {
     private static final int JOB_ID = 215;
-    private static final String TAG = GeofenceTransitionsIntentService.class.getSimpleName();
+    private static final String TAG = GeofenceTransitionsJobIntentService.class.getSimpleName();
 
     public static void enqueueWork(Context context, Intent intent) {
         Log.i(TAG, "enqueueWork: enquing work");
-        enqueueWork(context, GeofenceTransitionsIntentService.class, JOB_ID, intent);
+        enqueueWork(context, GeofenceTransitionsJobIntentService.class, JOB_ID, intent);
     }
 
     @Override
