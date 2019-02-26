@@ -1,6 +1,7 @@
 package com.orion.prointeractofficer;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,7 +39,7 @@ public class GeofenceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_geofence);
 
         // log information that intent is created
-        Log.i(TAG, "onCreate: ");
+        Log.i(TAG, "onCreate: GeofenceActivity loaded");
 
         // set intent to null
         geofencePendingIntent = null;
@@ -52,6 +53,7 @@ public class GeofenceActivity extends AppCompatActivity {
         // create geofence instance
         geofencingClient = getGeofencingClientInstance();
 
+        // add geofence to client
         addGeofence();
     }
 
@@ -61,8 +63,6 @@ public class GeofenceActivity extends AppCompatActivity {
 
         if(!checkPermissions()) {
             requestPermissions();
-        } else {
-
         }
     }
 
@@ -83,51 +83,39 @@ public class GeofenceActivity extends AppCompatActivity {
 
     // setup initial triggers
     private GeofencingRequest getGeofencingRequest() {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER | GeofencingRequest.INITIAL_TRIGGER_EXIT);
-        builder.addGeofences(geofencesList);
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder()
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER | GeofencingRequest.INITIAL_TRIGGER_EXIT)
+                .addGeofences(geofencesList);
         return builder.build();
     }
 
     // geofence pending intent
     private PendingIntent getGeofencePendingIntent() {
-        Log.i(TAG, "getGeofencePendingIntent: somewhere here");
+        Log.i(TAG, "getGeofencePendingIntent: created intent");
         if (geofencePendingIntent != null) {
-            Log.e(TAG, "getGeofencePendingIntent: not null");
             return geofencePendingIntent;
         }
         Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
-        intent.setAction("com.orion.prointeractofficer.GEOFENCE_TRIGGER");
         geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Log.i(TAG, "getGeofencePendingIntent: Returning intent");
         return geofencePendingIntent;
     }
 
     // add geofence
+    @SuppressLint("MissingPermission")
     private void addGeofence() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
         geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // yay! geofence added!
-                        Log.d(TAG, "Geofence loaded");
+                        Log.d(TAG, "Successfully added Geofence");
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // :(
-                        Log.d(TAG, "Failed to load geofence with error\n" + e);
+                        Log.d(TAG, "Failed to add geofence with error" + e);
                     }
                 });
     }
@@ -181,6 +169,8 @@ public class GeofenceActivity extends AppCompatActivity {
                     Log.i(TAG, "onRequestPermissionsResult: showing permission dialog");
                     showPermissionRequestAlertDialog();
                 }
+            }  else {
+                addGeofence();
             }
         }
     }
