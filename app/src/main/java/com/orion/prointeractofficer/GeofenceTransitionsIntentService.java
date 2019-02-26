@@ -68,12 +68,15 @@ public class GeofenceTransitionsIntentService extends JobIntentService {
 
     // TODO: handle these methods
     private void handleGeofenceExit() {
+        Log.i(TAG, "handleGeofenceExit: ");
     }
 
     private void handleGeofenceDwell() {
+        Log.i(TAG, "handleGeofenceDwell: ");
     }
 
     private void handleGeofenceEntry() {
+        Log.i(TAG, "handleGeofenceEntry: ");
     }
 
     /**
