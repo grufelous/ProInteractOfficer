@@ -15,9 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".GeofenceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <service
             android:name=".GeofenceTransitionsIntentService"
-            android:exported="false"></service>
+            android:exported="true"
+            android:enabled="true" />
 
         <activity android:name=".GeofenceActivity" />
         <activity android:name=".MainActivity">
