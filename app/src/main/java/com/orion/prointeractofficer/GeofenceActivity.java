@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -144,28 +146,72 @@ public class GeofenceActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_FINE_LOCATION);
 
         if(shouldShowRationale) {
-            Log.i(TAG, "requestPermissions: showing rationale to ask for permissions");
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            builder.setTitle(R.string.location_permission_title);
-
-            builder.setMessage(R.string.location_permission_message);
-
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ActivityCompat.requestPermissions(GeofenceActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            REQUEST_PERMISSIONS_REQUEST_CODE);
-                }
-            });
-
-            AlertDialog alertDialog = builder.create();
-
-            alertDialog.show();
+            showPermissionRequestAlertDialog();
         } else {
             Log.i(TAG, "requestPermissions: requesting permissions normally");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_PERMISSIONS_REQUEST_CODE);
+            callPermissionSystemDialog();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.i(TAG, "onRequestPermissionsResult: ");
+        if(requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
+            if(grantResults.length <= 0)  {
+                Log.i(TAG, "onRequestPermissionsResult: something happened that should not");
+            }  else if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                boolean shouldShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION);
+                if(!shouldShowRationale) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                    builder.setTitle(R.string.location_permission_title);
+
+                    builder.setMessage(R.string.location_permission_message);
+
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                            intent.setData(uri);
+                            startActivityForResult(intent, REQUEST_PERMISSIONS_REQUEST_CODE);
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+
+                    dialog.show();
+                } else {
+                    Log.i(TAG, "onRequestPermissionsResult: showing permission dialog");
+                    showPermissionRequestAlertDialog();
+                }
+            }
+        }
+    }
+
+    private void showPermissionRequestAlertDialog() {
+        Log.i(TAG, "showPermissionRequestAlertDialog: showing permission dialog");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.location_permission_title);
+
+        builder.setMessage(R.string.location_permission_message);
+
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                callPermissionSystemDialog();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.show();
+    }
+
+    private void callPermissionSystemDialog() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_PERMISSIONS_REQUEST_CODE);
     }
 }
