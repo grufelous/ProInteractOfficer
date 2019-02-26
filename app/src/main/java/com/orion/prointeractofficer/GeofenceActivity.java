@@ -163,25 +163,20 @@ public class GeofenceActivity extends AppCompatActivity {
                 boolean shouldShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.ACCESS_FINE_LOCATION);
                 if(!shouldShowRationale) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    AlertDialog permissionDialog = new AlertDialog.Builder(this)
+                            .setTitle(R.string.location_permission_title)
+                            .setMessage(R.string.location_permission_message)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivityForResult(intent, REQUEST_PERMISSIONS_REQUEST_CODE);
+                                }
+                            }).create();
 
-                    builder.setTitle(R.string.location_permission_title);
-
-                    builder.setMessage(R.string.location_permission_message);
-
-                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            Uri uri = Uri.fromParts("package", getPackageName(), null);
-                            intent.setData(uri);
-                            startActivityForResult(intent, REQUEST_PERMISSIONS_REQUEST_CODE);
-                        }
-                    });
-
-                    AlertDialog dialog = builder.create();
-
-                    dialog.show();
+                    permissionDialog.show();
                 } else {
                     Log.i(TAG, "onRequestPermissionsResult: showing permission dialog");
                     showPermissionRequestAlertDialog();
@@ -192,22 +187,18 @@ public class GeofenceActivity extends AppCompatActivity {
 
     private void showPermissionRequestAlertDialog() {
         Log.i(TAG, "showPermissionRequestAlertDialog: showing permission dialog");
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog permissionDialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.location_permission_title)
+                .setMessage(R.string.location_permission_message)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callPermissionSystemDialog();
+                    }
+                })
+                .create();
 
-        builder.setTitle(R.string.location_permission_title);
-
-        builder.setMessage(R.string.location_permission_message);
-
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                callPermissionSystemDialog();
-            }
-        });
-
-        AlertDialog alertDialog = builder.create();
-
-        alertDialog.show();
+        permissionDialog.show();
     }
 
     private void callPermissionSystemDialog() {
