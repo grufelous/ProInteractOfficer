@@ -1,7 +1,9 @@
 package com.orion.prointeractofficer;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.JobIntentService;
 import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
@@ -17,24 +19,17 @@ import java.util.List;
  * <p>
  * TODO: Customize class - update intent actions and extra parameters.
  */
-public class GeofenceTransitionsIntentService extends IntentService {
-    // TODO: Rename actions, choose action names that describe tasks that this
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    public static final String ACTION_FOO = "com.orion.prointeractofficer.action.FOO";
-    public static final String ACTION_BAZ = "com.orion.prointeractofficer.action.BAZ";
+public class GeofenceTransitionsIntentService extends JobIntentService {
+    private static final int JOB_ID = 215;
     private static final String TAG = GeofenceTransitionsIntentService.class.getSimpleName();
 
-    // TODO: Rename parameters
-    public static final String EXTRA_PARAM1 = "com.orion.prointeractofficer.extra.PARAM1";
-    public static final String EXTRA_PARAM2 = "com.orion.prointeractofficer.extra.PARAM2";
-
-    public GeofenceTransitionsIntentService() {
-        super("GeofenceTransitionsIntentService");
-        Log.i(TAG, "GeofenceTransitionsIntentService: ");
+    public static void enqueueWork(Context context, Intent intent) {
+        Log.i(TAG, "enqueueWork: enquing work");
+        enqueueWork(context, GeofenceTransitionsIntentService.class, JOB_ID, intent);
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(Intent intent) {
         Log.i(TAG, "onHandleIntent: service loaded");
         if (intent != null) {
             GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);

@@ -42,8 +42,13 @@ public class GeofenceActivity extends AppCompatActivity {
         // initialize geofence list
         geofencesList = new ArrayList<>();
 
+        // add geofence
+        geofencesList.add(getNewGeofence("geofence1", 37.422, -122.084, 100));
+
         // create geofence instance
         geofencingClient = getGeofencingClientInstance();
+
+        addGeofence();
     }
 
     @Override
@@ -53,7 +58,7 @@ public class GeofenceActivity extends AppCompatActivity {
         if(!checkPermissions()) {
             requestPermissions();
         } else {
-            addGeofence();
+
         }
     }
 
@@ -82,11 +87,15 @@ public class GeofenceActivity extends AppCompatActivity {
 
     // geofence pending intent
     private PendingIntent getGeofencePendingIntent() {
+        Log.i(TAG, "getGeofencePendingIntent: somewhere here");
         if (geofencePendingIntent != null) {
+            Log.e(TAG, "getGeofencePendingIntent: not null");
             return geofencePendingIntent;
         }
-        Intent intent = new Intent(this, GeofenceTransitionsIntentService.class);
-        geofencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
+        intent.setAction("com.orion.prointeractofficer.GEOFENCE_TRIGGER");
+        geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Log.i(TAG, "getGeofencePendingIntent: Returning intent");
         return geofencePendingIntent;
     }
 
@@ -114,7 +123,7 @@ public class GeofenceActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // :(
-                        Log.d(TAG, "Failed to load geofence with error\n" + e.getStackTrace());
+                        Log.d(TAG, "Failed to load geofence with error\n" + e);
                     }
                 });
     }
