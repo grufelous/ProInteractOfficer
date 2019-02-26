@@ -31,6 +31,8 @@ public class GeofenceActivity extends AppCompatActivity {
     private List<Geofence> geofencesList;
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 42;
+    private static final int GEOFENCE_EXPIRATION_DURATION = 1000 * 60 * 60; // milliseconds * seconds * minutes
+    private static final int GEOFENCE_LOITERTING_DELAY = 1000 * 30; // milliseconds * seconds
     private static final String TAG = GeofenceActivity.class.getSimpleName();
 
     @Override
@@ -48,7 +50,7 @@ public class GeofenceActivity extends AppCompatActivity {
         geofencesList = new ArrayList<>();
 
         // add geofence
-        geofencesList.add(getNewGeofence("geofence1", 37.422, -122.084, 100));
+        geofencesList.add(getNewGeofence("originalGeofence", 37.422, -122.084, 100));
 
         // create geofence instance
         geofencingClient = getGeofencingClientInstance();
@@ -76,8 +78,9 @@ public class GeofenceActivity extends AppCompatActivity {
         return new Geofence.Builder()
                 .setRequestId(geofenceId)
                 .setCircularRegion(geofencePointLongitude, geofencePointLatitude, geofencePointRadius)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                .setExpirationDuration(60*1000)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL)
+                .setExpirationDuration(GEOFENCE_EXPIRATION_DURATION)
+                .setLoiteringDelay(GEOFENCE_LOITERTING_DELAY)
                 .build();
     }
 
@@ -151,7 +154,7 @@ public class GeofenceActivity extends AppCompatActivity {
                 boolean shouldShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.ACCESS_FINE_LOCATION);
                 if(!shouldShowRationale) {
-                    AlertDialog permissionDialog = new AlertDialog.Builder(this)
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
                             .setTitle(R.string.location_permission_title)
                             .setMessage(R.string.location_permission_message)
                             .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -162,7 +165,9 @@ public class GeofenceActivity extends AppCompatActivity {
                                     intent.setData(uri);
                                     startActivityForResult(intent, REQUEST_PERMISSIONS_REQUEST_CODE);
                                 }
-                            }).create();
+                            });
+
+                    AlertDialog permissionDialog = builder.create();
 
                     permissionDialog.show();
                 } else {
@@ -177,7 +182,7 @@ public class GeofenceActivity extends AppCompatActivity {
 
     private void showPermissionRequestAlertDialog() {
         Log.i(TAG, "showPermissionRequestAlertDialog: showing permission dialog");
-        AlertDialog permissionDialog = new AlertDialog.Builder(this)
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.location_permission_title)
                 .setMessage(R.string.location_permission_message)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -185,8 +190,9 @@ public class GeofenceActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         callPermissionSystemDialog();
                     }
-                })
-                .create();
+                });
+
+        AlertDialog permissionDialog = builder.create();
 
         permissionDialog.show();
     }
