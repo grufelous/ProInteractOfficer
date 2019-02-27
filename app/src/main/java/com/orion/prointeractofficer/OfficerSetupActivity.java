@@ -9,11 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,15 +28,14 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-
 public class OfficerSetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private DatabaseReference rtdbSetup;
-    EditText firstNameInput, secondNameInput, aboutTextInputField;
+    private DatabaseReference rtDB;
+    EditText firstNameInput, secondNameInput, aboutTextInputField, titleTextInputField, phoneNumberInputField;
     TextView setupIntroText;
     Spinner departmentSpinner;
+    Switch interactivitySwitch, availabilitySwitch;
     /*Circle*/ ImageView circularProfileImageView;
     ListView skillListView;
     ArrayAdapter<String> skillListAdapter;
@@ -50,8 +50,10 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
                 setupIntroText.setText("Hi, " + user.getDisplayName());
             }
         });
-        rtdbSetup.child("officer").child(user.getUid()).child("about").setValue(aboutTextInputField.getText().toString());
-
+        rtDB.child("officer").child(user.getUid()).child("name").setValue(displayName);
+        rtDB.child("officer").child(user.getUid()).child("contact").setValue(phoneNumberInputField.getText().toString());
+        rtDB.child("officer").child(user.getUid()).child("title").setValue(titleTextInputField.getText().toString());
+        rtDB.child("officer").child(user.getUid()).child("about").setValue(aboutTextInputField.getText().toString());
     }
 
     private final int SELECT_PHOTO = 1;
@@ -61,13 +63,14 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         setContentView(R.layout.officer_setup_layout);
         firstNameInput = findViewById(R.id.firstNameInputField);
         secondNameInput = findViewById(R.id.secondNameInputField);
+        phoneNumberInputField = findViewById(R.id.phoneNumberInputField);
         setupIntroText = findViewById(R.id.setupIntroText);
         circularProfileImageView = findViewById(R.id.profile_image);
         aboutTextInputField = findViewById(R.id.aboutTextInputField);
         departmentSpinner = findViewById(R.id.departmentSpinner);
-        rtdbSetup = FirebaseDatabase.getInstance().getReference();
-        skillListView = findViewById(R.id.skillsList);
-
+        titleTextInputField = findViewById(R.id.titleTextInputField);
+        interactivitySwitch = findViewById(R.id.interactionSwitch);
+        availabilitySwitch = findViewById(R.id.availableSwitch);
         //ArrayList<String> skillsList = new ArrayList<String>();
         //skillListAdapter = new ArrayAdapter<String>(this, R.layout.skill_row, skillsList);
 
@@ -75,6 +78,8 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         //Log.d("UIDUser", "onCreate: " + userUidIntent.getStringExtra("uid"));
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        rtDB = FirebaseDatabase.getInstance().getReference();
+
         circularProfileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +99,18 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         departmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         departmentSpinner.setAdapter(departmentAdapter);
         departmentSpinner.setOnItemSelectedListener(this);
+        interactivitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rtDB.child("officer").child(user.getUid()).child("interactivity").setValue(isChecked);
+            }
+        });
+        availabilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rtDB.child("officer").child(user.getUid()).child("available").setValue(isChecked);
+            }
+        });
     }
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent imageReturnedIntent) {
@@ -125,7 +142,7 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String dept = parent.getItemAtPosition(position).toString();
         Log.d("item", "onItemSelected: selected " + dept);
-        rtdbSetup.child("officer").child(user.getUid()).child("department").setValue(dept);
+        rtDB.child("officer").child(user.getUid()).child("department").setValue(dept);
     }
 
     @Override

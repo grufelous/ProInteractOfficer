@@ -45,7 +45,7 @@
         android:layout_toEndOf="@id/profile_image"
         android:width="186dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="28dp"
         />
     <EditText
         android:id="@+id/secondNameInputField"
@@ -55,6 +55,18 @@
         android:width="186dp"
         android:layout_marginStart="16dp"
         android:layout_below="@id/firstNameInputField"
+        android:layout_toEndOf="@id/profile_image"
+        />
+    <EditText
+        android:id="@+id/phoneNumberInputField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Contact number"
+        android:ems="10"
+        android:width="186dp"
+        android:inputType="phone"
+        android:layout_marginStart="16dp"
+        android:layout_below="@id/secondNameInputField"
         android:layout_toEndOf="@id/profile_image"
         />
     <Button
@@ -100,15 +112,40 @@
         android:layout_below="@id/aboutTextInputField"
         android:layout_toEndOf="@id/departmentLabel"
         />
-    <ListView
+    <EditText
+        android:id="@+id/titleTextInputField"
+        android:layout_width="match_parent"
+        android:hint="Title"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/departmentSpinner"
+        android:lines="1"
+        />
+    <!--<ListView
         android:id="@+id/skillsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/departmentLabel"
         android:layout_marginTop="28dp"
-        android:layout_above="@id/updateProfileBtn"
-        >
+        android:layout_above="@id/updateProfileBtn">
+    </ListView>-->
+    <TextView
+        android:layout_below="@id/titleTextInputField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/skillListText"
+        />
 
-    </ListView>
-
+    <Switch
+        android:id="@+id/interactionSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enable interactions"
+        android:layout_below="@id/skillListText"/>
+    <Switch
+        android:id="@+id/availableSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set as available"
+        android:layout_below="@id/interactionSwitch"/>
 </RelativeLayout>

@@ -37,7 +37,6 @@
             <Button
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:shadowRadius="4dp"
                 android:padding="0dp"
                 android:layout_marginRight="32dp"
                 android:text="x"
