@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 import android.location.Location;
+import android.support.v4.app.JobIntentService;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationResult;
@@ -17,15 +18,18 @@ import java.util.List;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class LocationUpdatesIntentService extends IntentService {
+public class LocationUpdatesIntentService extends JobIntentService {
+    public static final int JOB_ID = 314215;
     public static final String TAG = IntentService.class.getSimpleName();
 
-    public LocationUpdatesIntentService() {
-        super("LocationUpdatesIntentService");
+    public static void enqueueWork(Context context, Intent intent) {
+        Log.i(TAG, "enqueueWork: creating location service");
+        enqueueWork(context, LocationUpdatesIntentService.class, JOB_ID, intent);
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleWork(Intent intent) {
+        Log.i(TAG, "onHandleWork: handling intent");
         if(intent != null) {
             LocationResult locationResult = LocationResult.extractResult(intent);
             if(locationResult != null) {

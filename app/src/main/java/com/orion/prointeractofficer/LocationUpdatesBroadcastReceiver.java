@@ -15,18 +15,7 @@ public class LocationUpdatesBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent != null) {
-            LocationResult locationResult = LocationResult.extractResult(intent);
-            if(locationResult != null) {
-                List<Location> locations = locationResult.getLocations();
-                LocationResultHelper locationResultHelper = new LocationResultHelper(
-                        context, locations);
-                // Save the location data to SharedPreferences.
-                locationResultHelper.saveResults();
-                // Show notification with the location data.
-                locationResultHelper.showNotification();
-                Log.i(TAG, LocationResultHelper.getSavedLocationResult(context));
-            }
-        }
+        Log.i(TAG, "onReceive: calling on receive");
+        LocationUpdatesIntentService.enqueueWork(context, intent);
     }
 }
