@@ -110,6 +110,12 @@
         android:maxLines="3"
         android:tooltipText="About you"
         />
+    <Switch
+        android:id="@+id/availableSwitch"
+        android:text="Availability"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aboutTextInputField"/>
     <!--<ListView
         android:id="@+id/skillsList"
         android:layout_width="match_parent"

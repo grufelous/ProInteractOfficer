@@ -61,6 +61,7 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
     // TODO: handle these methods
     private void handleGeofenceExit() {
+        //rtDB.child("officer").child(user.getUid()).child("available").setValue(false);
         Log.i(TAG, "handleGeofenceExit: ");
     }
 

@@ -28,8 +28,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -46,7 +49,7 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
     TextView setupIntroText;
     Spinner departmentSpinner;
     Button updateProfileBtn;
-    //Switch availabilitySwitch;
+    Switch availabilitySwitch;
     /*Circle*/ ImageView circularProfileImageView;
 
     protected void updateOfficerInfo(/*View view*/) {
@@ -78,7 +81,7 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         departmentSpinner = findViewById(R.id.departmentSpinner);
         titleTextInputField = findViewById(R.id.titleTextInputField);
         updateProfileBtn = findViewById(R.id.updateProfileBtn);
-        //availabilitySwitch = findViewById(R.id.availableSwitch);
+        availabilitySwitch = findViewById(R.id.availableSwitch);
         //ArrayList<String> skillsList = new ArrayList<String>();
         //skillListAdapter = new ArrayAdapter<String>(this, R.layout.skill_row, skillsList);
 
@@ -119,13 +122,28 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
             }
         });
 
+        DatabaseReference availabilityReference = rtDB.child("officer").child(user.getUid()).child("available");
 
-        /*availabilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        availabilityReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("AVAILEDIT", "onDataChange: " + dataSnapshot.getValue());
+                boolean availStat = (dataSnapshot.getValue() == "true") ? true : false;
+                Toast.makeText(OfficerSetupActivity.this, "Change " + dataSnapshot.getValue(), Toast.LENGTH_LONG);
+                availabilitySwitch.setChecked(availStat);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(OfficerSetupActivity.this, "Network error", Toast.LENGTH_LONG);
+            }
+        });
+        availabilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 rtDB.child("officer").child(user.getUid()).child("available").setValue(isChecked);
             }
-        });*/
+        });
     }
     //image upload result
     @Override
