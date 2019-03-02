@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SkillTitle" parent="@android:style/TextAppearance">
+        <item name="android:color">#000000</item>
+        <item name="android:textSize">20dp</item>
+
+    </style>
+
 </resources>
