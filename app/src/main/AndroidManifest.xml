@@ -17,19 +17,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- Geofence Broadcast Receiver -->
+        <!-- Location Updates Broadcast Receiver -->
+        <receiver
+            android:name=".LocationUpdatesBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" /> <!-- Geofence Broadcast Receiver -->
         <receiver
             android:name=".GeofenceBroadcastReceiver"
             android:enabled="true"
-            android:exported="true">
-        </receiver>
-
-        <!-- Geofence Transition Job Intent Service -->
+            android:exported="true" /> <!-- Geofence Transition Job Intent Service -->
         <service
             android:name=".GeofenceTransitionsJobIntentService"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" >
-        </service>
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <!-- Location Updates Intent Service -->
+        <service
+            android:name=".LocationUpdatesIntentService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity android:name=".GeofenceActivity" />
         <activity android:name=".MainActivity">

@@ -5,19 +5,27 @@ import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,7 +33,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GeofenceActivity extends AppCompatActivity {
+public class GeofenceActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     private GeofencingClient geofencingClient;
     private PendingIntent geofencePendingIntent;
     private List<Geofence> geofencesList;
@@ -39,6 +49,9 @@ public class GeofenceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geofence);
+
+        // inits for location updates
+        buildGoogleApiClient();
 
         // log information that intent is created
         Log.i(TAG, "onCreate: GeofenceActivity loaded");
@@ -200,5 +213,94 @@ public class GeofenceActivity extends AppCompatActivity {
     private void callPermissionSystemDialog() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_PERMISSIONS_REQUEST_CODE);
+    }
+
+    // code for location updates activity
+    // TODO: create a new activity 'Location Updates' and run it whenever geofence activity is called
+    private static final long UPDATE_INTERVAL = 10 * 1000;
+    private static final long FASTEST_UPDATE_INTERVAL = UPDATE_INTERVAL / 2;
+    private static final long MAX_WAIT_TIME = UPDATE_INTERVAL * 3;
+
+    // create a location request variable
+    private LocationRequest mLocationRequest;
+    // create google api client
+    private GoogleApiClient mGoogleApiClient;
+
+    private void createLocationRequest() {
+        Log.i(TAG, "createLocationRequest: successfully created location request");
+        mLocationRequest = new LocationRequest();
+
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL);
+        mLocationRequest.setMaxWaitTime(MAX_WAIT_TIME);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    private void buildGoogleApiClient() {
+        if(mGoogleApiClient != null) {
+            Log.e(TAG, "buildGoogleApiClient: ApiClient already created");
+            return;
+        }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .enableAutoManage(this, this)
+                .addApi(LocationServices.API)
+                .build();
+        createLocationRequest();
+    }
+
+    private PendingIntent getLocationUpdatesPendingIntent() {
+        Intent intent = new Intent(this, LocationUpdatesBroadcastReceiver.class);
+        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(LocationResultHelper.KEY_LOCATION_UPDATES_RESULT)) {
+            Log.i(TAG, "onSharedPreferenceChanged: Logging from UI " + LocationResultHelper.getSavedLocationResult(this));
+        } else if (key.equals(LocationRequestHelper.KEY_LOCATION_UPDATES_REQUESTED)) {
+            Log.i(TAG, "onSharedPreferenceChanged: Logging from UI " + LocationRequestHelper.getRequesting(this));
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "onConnected: GoogleApiClient connected");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        final String text = "Connection suspended";
+        Log.w(TAG, text + ": Error code: " + i);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        final String text = "Exception while connecting to Google Play services";
+        Log.w(TAG, text + ": " + connectionResult.getErrorMessage());
+    }
+
+    public void requestLocationUpdates() {
+        try {
+            Log.i(TAG, "Starting location updates");
+            LocationRequestHelper.setRequesting(this, true);
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, getLocationUpdatesPendingIntent());
+        } catch (SecurityException e) {
+            LocationRequestHelper.setRequesting(this, false);
+            e.printStackTrace();
+        }
+    }
+
+    public void removeLocationUpdates(View view) {
+        Log.i(TAG, "Removing location updates");
+        LocationRequestHelper.setRequesting(this, false);
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,
+                getLocationUpdatesPendingIntent());
+    }
+
+    public void clicked(View view) {
+        requestLocationUpdates();
     }
 }
