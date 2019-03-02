@@ -27,11 +27,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class OfficerSetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference rtDB;
+    private FirebaseStorage storage;
     EditText firstNameInput, secondNameInput, aboutTextInputField, titleTextInputField, phoneNumberInputField;
     TextView setupIntroText;
     Spinner departmentSpinner;
@@ -79,6 +81,7 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         rtDB = FirebaseDatabase.getInstance().getReference();
+        storage = FirebaseStorage.getInstance();
 
         circularProfileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +97,8 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
             //@TODO: loads an empty image. Fix the missing resource issue. Also ensure circle cropping.
             Glide.with(this).load(user.getPhotoUrl()).apply(RequestOptions.centerCropTransform()).into(circularProfileImageView);
             //circularProfileImageView.setImageURI(user.getPhotoUrl());
+        } else {
+            Log.d("UPIC", "onCreate: missing pic");
         }
         ArrayAdapter<CharSequence> departmentAdapter = ArrayAdapter.createFromResource(this, R.array.aicte_department_array, android.R.layout.simple_spinner_item);
         departmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

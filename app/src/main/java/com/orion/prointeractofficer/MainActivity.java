@@ -74,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "launchAuthActivity: launching next activity");
         startActivity(authIntent);
     }
+    public void launchAuthActivity() {
+        Intent authIntent = new Intent(this, OfficerAuthActivity.class);
+        Log.d(TAG, "launchAuthActivity: launching next activity");
+        startActivity(authIntent);
+    }
     private FirebaseAuth mAuth;
     private DatabaseReference db;
 
@@ -98,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                readUserList((Map<String, Object>) dataSnapshot.child("officer").getValue());
+                Log.d("READ", "onDataChange: " + dataSnapshot.child("officer").getValue());
+                //readUserList((Map<String, Object>) dataSnapshot.child("officer").getValue());
             }
 
             @Override
@@ -107,13 +113,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Log.d("FBDB", "onCreate: " + db.child("officer").toString());
-        /*if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Snackbar.make(main_layout, "Not logged in", Snackbar.LENGTH_SHORT).show();
-            signIn();
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            //Snackbar.make(main_layout, "Not logged in", Snackbar.LENGTH_SHORT).show();
+            //signIn();
+            launchAuthActivity();
+
         } else {
-            String dispName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString();
-            Snackbar.make(main_layout, "Signed in as " + dispName, Snackbar.LENGTH_SHORT).show();
-        }*/
+            //String dispName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString();
+            //Snackbar.make(main_layout, "Signed in as " + dispName, Snackbar.LENGTH_SHORT).show();
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            Log.d(TAG, "onCreate: " + user.getDisplayName());
+            Intent authIntent = new Intent(this, OfficerSetupActivity.class);
+            Log.d(TAG, "launchSetup: launching next activity");
+
+            startActivity(authIntent);
+        }
 
     }
 }

@@ -86,40 +86,41 @@
         android:layout_below="@id/profile_image"
         android:background="?android:attr/listDivider" />
     <EditText
-        android:id="@+id/aboutTextInputField"
-        android:layout_width="match_parent"
-        android:hint="Bio"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_below="@id/profileDivider"
-        android:lines="3"
-        android:maxLines="5"
-        android:tooltipText="About you"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Department"
-        android:layout_marginTop="4dp"
-        android:id="@+id/departmentLabel"
-        android:layout_below="@id/aboutTextInputField"
-        />
-
-    <Spinner
-        android:id="@+id/departmentSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/aboutTextInputField"
-        android:layout_toEndOf="@id/departmentLabel"
-        />
-    <EditText
         android:id="@+id/titleTextInputField"
         android:layout_width="match_parent"
         android:hint="Title"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_below="@id/departmentSpinner"
+        android:layout_below="@id/profileDivider"
         android:lines="1"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Department"
+        android:layout_marginTop="6dp"
+        android:id="@+id/departmentLabel"
+        android:layout_below="@id/titleTextInputField"
+        />
+    <Spinner
+        android:id="@+id/departmentSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_below="@id/titleTextInputField"
+        android:layout_toEndOf="@id/departmentLabel"
+        />
+    <EditText
+        android:id="@+id/aboutTextInputField"
+        android:layout_width="match_parent"
+        android:hint="Bio"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/departmentSpinner"
+        android:lines="3"
+        android:maxLines="5"
+        android:tooltipText="About you"
         />
     <!--<ListView
         android:id="@+id/skillsList"
@@ -130,18 +131,17 @@
         android:layout_above="@id/updateProfileBtn">
     </ListView>-->
     <TextView
-        android:layout_below="@id/titleTextInputField"
+        android:layout_below="@id/aboutTextInputField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/skillListText"
         />
-
     <Switch
         android:id="@+id/interactionSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Enable interactions"
-        android:layout_below="@id/skillListText"/>
+        android:layout_below="@id/aboutTextInputField"/>
     <Switch
         android:id="@+id/availableSwitch"
         android:layout_width="match_parent"
