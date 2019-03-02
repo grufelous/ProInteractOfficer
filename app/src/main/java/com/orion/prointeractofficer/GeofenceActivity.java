@@ -15,9 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -201,4 +203,17 @@ public class GeofenceActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_PERMISSIONS_REQUEST_CODE);
     }
+
+    // code for location updates activity
+    // TODO: create a new activity 'Location Updates' and run it whenever geofence activity is called
+    private static final long UPDATE_INTERVAL = 10 * 1000;
+    private static final long FASTEST_UPDATE_INTERVAL = UPDATE_INTERVAL / 2;
+    private static final long MAX_WAIT_TIME = UPDATE_INTERVAL * 3;
+
+    // create a location request variable
+    private LocationRequest mLocationRequest;
+    // create google api client
+    private GoogleApiClient mGoogleApiClient;
+
+
 }
