@@ -3,10 +3,12 @@ package com.orion.prointeractofficer;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -302,5 +304,23 @@ public class GeofenceActivity extends AppCompatActivity implements GoogleApiClie
 
     public void clicked(View view) {
         requestLocationUpdates();
+    }
+
+    public void startService(View view) {
+        PackageManager pm  = this.getPackageManager();
+        ComponentName componentName = new ComponentName(this, LocationUpdatesBroadcastReceiver.class);
+        int status = getApplicationContext().getPackageManager().getComponentEnabledSetting(componentName);
+        pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+        Log.e(TAG,status + "");
+    }
+
+    public void stopService(View view) {
+        PackageManager pm  = this.getPackageManager();
+        ComponentName componentName = new ComponentName(this, LocationUpdatesBroadcastReceiver.class);
+        int status = getApplicationContext().getPackageManager().getComponentEnabledSetting(componentName);
+        pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+        Log.e(TAG,status + "");
     }
 }
