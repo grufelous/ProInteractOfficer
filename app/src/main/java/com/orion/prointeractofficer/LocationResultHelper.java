@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.preference.PreferenceManager;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -28,6 +29,8 @@ public class LocationResultHelper {
     LocationResultHelper(Context context, List<Location> locations) {
         mContext = context;
         mLocations = locations;
+
+        Log.i("Geofence", "LocationResultHelper: " + locations);
 
         CharSequence name = PRIMARY_CHANNEL;
         NotificationChannel channel = new NotificationChannel("notifChannelId", name, NotificationManager.IMPORTANCE_DEFAULT);
