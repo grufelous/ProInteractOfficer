@@ -8,6 +8,6 @@ public class GeofenceBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        GeofenceTransitionsIntentService.enqueueWork(context, intent);
+        GeofenceTransitionsJobIntentService.enqueueWork(context, intent);
     }
 }

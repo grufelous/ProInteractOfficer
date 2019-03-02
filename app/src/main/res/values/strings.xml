@@ -9,4 +9,7 @@
     <string name="launch_login_button_txt">Let\'s Start</string>
     <string name="login_btn">Login</string>
     <string name="signup_btn">Create account</string>
+    <string name="ok">OK</string>
+    <string name="location_permission_title">Enable Location Access</string>
+    <string name="location_permission_message">Location access is needed for accessing the current location. Please allow it for the proper functioning of the app.</string>
 </resources>

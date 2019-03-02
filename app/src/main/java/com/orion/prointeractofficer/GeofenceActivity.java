@@ -1,11 +1,16 @@
 package com.orion.prointeractofficer;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +31,8 @@ public class GeofenceActivity extends AppCompatActivity {
     private List<Geofence> geofencesList;
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 42;
+    private static final int GEOFENCE_EXPIRATION_DURATION = 1000 * 60 * 60; // milliseconds * seconds * minutes
+    private static final int GEOFENCE_LOITERTING_DELAY = 1000 * 30; // milliseconds * seconds
     private static final String TAG = GeofenceActivity.class.getSimpleName();
 
     @Override
@@ -34,7 +41,7 @@ public class GeofenceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_geofence);
 
         // log information that intent is created
-        Log.i(TAG, "onCreate: ");
+        Log.i(TAG, "onCreate: GeofenceActivity loaded");
 
         // set intent to null
         geofencePendingIntent = null;
@@ -43,11 +50,12 @@ public class GeofenceActivity extends AppCompatActivity {
         geofencesList = new ArrayList<>();
 
         // add geofence
-        geofencesList.add(getNewGeofence("geofence1", 37.422, -122.084, 100));
+        geofencesList.add(getNewGeofence("originalGeofence", 37.422, -122.084, 100));
 
         // create geofence instance
         geofencingClient = getGeofencingClientInstance();
 
+        // add geofence to client
         addGeofence();
     }
 
@@ -57,8 +65,6 @@ public class GeofenceActivity extends AppCompatActivity {
 
         if(!checkPermissions()) {
             requestPermissions();
-        } else {
-
         }
     }
 
@@ -72,58 +78,47 @@ public class GeofenceActivity extends AppCompatActivity {
         return new Geofence.Builder()
                 .setRequestId(geofenceId)
                 .setCircularRegion(geofencePointLongitude, geofencePointLatitude, geofencePointRadius)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                .setExpirationDuration(60*1000)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL)
+                .setExpirationDuration(GEOFENCE_EXPIRATION_DURATION)
+                .setLoiteringDelay(GEOFENCE_LOITERTING_DELAY)
                 .build();
     }
 
     // setup initial triggers
     private GeofencingRequest getGeofencingRequest() {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER | GeofencingRequest.INITIAL_TRIGGER_EXIT);
-        builder.addGeofences(geofencesList);
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder()
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER | GeofencingRequest.INITIAL_TRIGGER_EXIT)
+                .addGeofences(geofencesList);
         return builder.build();
     }
 
     // geofence pending intent
     private PendingIntent getGeofencePendingIntent() {
-        Log.i(TAG, "getGeofencePendingIntent: somewhere here");
+        Log.i(TAG, "getGeofencePendingIntent: created intent");
         if (geofencePendingIntent != null) {
-            Log.e(TAG, "getGeofencePendingIntent: not null");
             return geofencePendingIntent;
         }
         Intent intent = new Intent(this, GeofenceBroadcastReceiver.class);
-        intent.setAction("com.orion.prointeractofficer.GEOFENCE_TRIGGER");
         geofencePendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Log.i(TAG, "getGeofencePendingIntent: Returning intent");
         return geofencePendingIntent;
     }
 
     // add geofence
+    @SuppressLint("MissingPermission")
     private void addGeofence() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
         geofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // yay! geofence added!
-                        Log.d(TAG, "Geofence loaded");
+                        Log.d(TAG, "Successfully added Geofence");
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // :(
-                        Log.d(TAG, "Failed to load geofence with error\n" + e);
+                        Log.d(TAG, "Failed to add geofence with error" + e);
                     }
                 });
     }
@@ -142,13 +137,68 @@ public class GeofenceActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_FINE_LOCATION);
 
         if(shouldShowRationale) {
-            // TODO
-            // user denied
-            // request permission again
+            showPermissionRequestAlertDialog();
         } else {
-            Log.i(TAG, "requestPermissions: ");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_PERMISSIONS_REQUEST_CODE);
+            Log.i(TAG, "requestPermissions: requesting permissions normally");
+            callPermissionSystemDialog();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.i(TAG, "onRequestPermissionsResult: ");
+        if(requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
+            if(grantResults.length <= 0)  {
+                Log.i(TAG, "onRequestPermissionsResult: something happened that should not");
+            }  else if(grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                boolean shouldShowRationale = ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION);
+                if(!shouldShowRationale) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                            .setTitle(R.string.location_permission_title)
+                            .setMessage(R.string.location_permission_message)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                    intent.setData(uri);
+                                    startActivityForResult(intent, REQUEST_PERMISSIONS_REQUEST_CODE);
+                                }
+                            });
+
+                    AlertDialog permissionDialog = builder.create();
+
+                    permissionDialog.show();
+                } else {
+                    Log.i(TAG, "onRequestPermissionsResult: showing permission dialog");
+                    showPermissionRequestAlertDialog();
+                }
+            }  else {
+                addGeofence();
+            }
+        }
+    }
+
+    private void showPermissionRequestAlertDialog() {
+        Log.i(TAG, "showPermissionRequestAlertDialog: showing permission dialog");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.location_permission_title)
+                .setMessage(R.string.location_permission_message)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        callPermissionSystemDialog();
+                    }
+                });
+
+        AlertDialog permissionDialog = builder.create();
+
+        permissionDialog.show();
+    }
+
+    private void callPermissionSystemDialog() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_PERMISSIONS_REQUEST_CODE);
     }
 }
