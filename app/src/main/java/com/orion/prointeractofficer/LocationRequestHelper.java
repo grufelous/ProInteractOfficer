@@ -3,7 +3,7 @@ package com.orion.prointeractofficer;
 import android.content.Context;
 import android.preference.PreferenceManager;
 
-public class LocationResultHelper {
+public class LocationRequestHelper {
     final static String KEY_LOCATION_UPDATES_REQUESTED = "location-updates-requested";
 
     static void setRequesting(Context context, boolean value) {
