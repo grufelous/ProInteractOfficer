@@ -35,8 +35,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordInputField"
         android:layout_centerHorizontal="true"
-        android:onClick="signUp"
         android:text="@string/signup_btn" />
+        <!--android:onClick="signUp"-->
+
 
     <Button
         android:id="@+id/loginBtn"
@@ -45,7 +46,8 @@
         android:layout_below="@id/passwordInputField"
         android:layout_centerHorizontal="true"
         android:layout_toEndOf="@id/signupBtn"
-        android:onClick="signIn"
         android:text="@string/login_btn" />
+        <!--android:onClick="signIn"-->
+
 
 </RelativeLayout>

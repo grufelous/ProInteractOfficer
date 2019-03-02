@@ -84,5 +84,43 @@ public class OfficerAuthActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         signupBtn = findViewById(R.id.signupBtn);
         //Intent intent = getIntent();
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signInWithEmailAndPassword(emailInputField.getText().toString(), passwordInputField.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    mAuth = FirebaseAuth.getInstance();
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    launchSetupUI(user);
+                                } else {
+                                    Toast.makeText(OfficerAuthActivity.this, "Log in failed", Toast.LENGTH_LONG);
+                                }
+                            }
+                        });
+            }
+        });
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.createUserWithEmailAndPassword(emailInputField.getText().toString(), passwordInputField.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Log.d("SIGNUP", "onComplete: called");
+                                if(task.isSuccessful()) {
+                                    Log.d("SIGNUP", "onComplete: called");
+                                    mAuth = FirebaseAuth.getInstance();
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    launchSetupUI(user);
+                                } else {
+                                    Toast.makeText(OfficerAuthActivity.this, "Sign up failed", Toast.LENGTH_LONG);
+                                }
+                            }
+                        });
+            }
+        });
     }
 }

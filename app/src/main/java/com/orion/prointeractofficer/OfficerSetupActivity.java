@@ -9,10 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -20,7 +20,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,30 +31,34 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class OfficerSetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private DatabaseReference rtDB;
     private FirebaseStorage storage;
-    EditText firstNameInput, secondNameInput, aboutTextInputField, titleTextInputField, phoneNumberInputField;
+    EditText nameInput, aboutTextInputField, titleTextInputField, phoneNumberInputField;
     TextView setupIntroText;
     Spinner departmentSpinner;
-    Switch interactivitySwitch, availabilitySwitch;
+    Button updateProfileBtn;
+    //Switch availabilitySwitch;
     /*Circle*/ ImageView circularProfileImageView;
-    ListView skillListView;
-    ArrayAdapter<String> skillListAdapter;
 
-    protected void updateOfficerInfo(View view) {
+    protected void updateOfficerInfo(/*View view*/) {
         user = mAuth.getCurrentUser();
-        String displayName = firstNameInput.getText().toString() + " " + secondNameInput.getText().toString();
+        String displayName = nameInput.getText().toString();
         UserProfileChangeRequest changeNameRequest = new UserProfileChangeRequest.Builder().setDisplayName(displayName).build();
-        user.updateProfile(changeNameRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+        user.updateProfile(changeNameRequest);/*.addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 setupIntroText.setText("Hi, " + user.getDisplayName());
             }
-        });
+        });*/
         rtDB.child("officer").child(user.getUid()).child("name").setValue(displayName);
         rtDB.child("officer").child(user.getUid()).child("contact").setValue(phoneNumberInputField.getText().toString());
         rtDB.child("officer").child(user.getUid()).child("title").setValue(titleTextInputField.getText().toString());
@@ -63,16 +70,15 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.officer_setup_layout);
-        firstNameInput = findViewById(R.id.firstNameInputField);
-        secondNameInput = findViewById(R.id.secondNameInputField);
+        nameInput = findViewById(R.id.nameInputField);
         phoneNumberInputField = findViewById(R.id.phoneNumberInputField);
         setupIntroText = findViewById(R.id.setupIntroText);
         circularProfileImageView = findViewById(R.id.profile_image);
         aboutTextInputField = findViewById(R.id.aboutTextInputField);
         departmentSpinner = findViewById(R.id.departmentSpinner);
         titleTextInputField = findViewById(R.id.titleTextInputField);
-        interactivitySwitch = findViewById(R.id.interactionSwitch);
-        availabilitySwitch = findViewById(R.id.availableSwitch);
+        updateProfileBtn = findViewById(R.id.updateProfileBtn);
+        //availabilitySwitch = findViewById(R.id.availableSwitch);
         //ArrayList<String> skillsList = new ArrayList<String>();
         //skillListAdapter = new ArrayAdapter<String>(this, R.layout.skill_row, skillsList);
 
@@ -93,9 +99,10 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         });
 
         if(user.getPhotoUrl() != null) {
+            StorageReference s = storage.getReference().child("images/" + user.getUid() + ".jpg");
             Log.d("UPIC", "onCreate: User logged in has picture: " + user.getPhotoUrl());
-            //@TODO: loads an empty image. Fix the missing resource issue. Also ensure circle cropping.
-            Glide.with(this).load(user.getPhotoUrl()).apply(RequestOptions.centerCropTransform()).into(circularProfileImageView);
+            Glide.with(this).load(s).into(circularProfileImageView);
+            //Glide.with(this).load(user.getPhotoUrl()).apply(RequestOptions.centerCropTransform()).into(circularProfileImageView);
             //circularProfileImageView.setImageURI(user.getPhotoUrl());
         } else {
             Log.d("UPIC", "onCreate: missing pic");
@@ -104,19 +111,23 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         departmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         departmentSpinner.setAdapter(departmentAdapter);
         departmentSpinner.setOnItemSelectedListener(this);
-        interactivitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        updateProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                rtDB.child("officer").child(user.getUid()).child("interactivity").setValue(isChecked);
+            public void onClick(View v) {
+                updateOfficerInfo();
             }
         });
-        availabilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+        /*availabilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 rtDB.child("officer").child(user.getUid()).child("available").setValue(isChecked);
             }
-        });
+        });*/
     }
+    //image upload result
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, responseCode, imageReturnedIntent);
@@ -128,6 +139,39 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
                     try {
                         profileImageUri = imageReturnedIntent.getData();
                         circularProfileImageView.setImageURI(profileImageUri);
+
+                        InputStream imageStream = getContentResolver().openInputStream(profileImageUri);
+
+                        StorageReference s = storage.getReference();
+
+                        StorageReference profileRef = s.child("images/" + user.getUid() + ".jpg");
+                        final String TAG = "IMGUPD";
+                        UploadTask uTask = profileRef.putStream(imageStream);
+                        uTask.addOnCanceledListener(
+                                new OnCanceledListener() {
+                                    @Override
+                                    public void onCanceled() {
+                                        Log.d(TAG, "onCanceled: Image upload cancelled");
+                                        Toast.makeText(OfficerSetupActivity.this, "Image upload cancelled", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                        ).addOnFailureListener(
+                                new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "onFailure: Upload failed");
+                                        Toast.makeText(OfficerSetupActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                        ).addOnSuccessListener(
+                                new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        Log.d(TAG, "onSuccess: Image successfully uploaded");
+                                        Toast.makeText(OfficerSetupActivity.this, "Image uploaded", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                        );
                         profileChangeRequest = new UserProfileChangeRequest.Builder().setPhotoUri(profileImageUri).build();
                         user.updateProfile(profileChangeRequest)/*.addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -135,21 +179,21 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
 
                             }
                         })*/;
-                    } catch (Exception e) {
-                        Toast.makeText(this, "Image updation error", Toast.LENGTH_LONG).show();
+                    } catch (FileNotFoundException f) {
+                        Toast.makeText(this, "File not found!", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
         }
     }
 
+    //spinner item
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String dept = parent.getItemAtPosition(position).toString();
         Log.d("item", "onItemSelected: selected " + dept);
         rtDB.child("officer").child(user.getUid()).child("department").setValue(dept);
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 

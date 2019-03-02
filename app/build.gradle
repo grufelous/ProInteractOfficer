@@ -38,6 +38,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.6'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
 
+    implementation 'com.firebaseui:firebase-ui-storage:4.3.1'
+
     // FirebaseUI for Firebase Realtime Database
     //implementation 'com.firebaseui:firebase-ui-database:4.3.1'
 
@@ -47,7 +49,7 @@ dependencies {
 
     //cicular imageview
     implementation 'de.hdodenhof:circleimageview:3.0.0'
-    //glide
+    //glide imp
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
