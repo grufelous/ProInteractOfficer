@@ -3,13 +3,30 @@ package com.orion.prointeractofficer;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.util.Log;
+
+import com.google.android.gms.location.LocationResult;
+
+import java.util.List;
 
 public class LocationUpdatesBroadcastReceiver extends BroadcastReceiver {
+    public static final String TAG = BroadcastReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: This method is called when the BroadcastReceiver is receiving
-        // an Intent broadcast.
-        throw new UnsupportedOperationException("Not yet implemented");
+        if(intent == null) {
+            LocationResult locationResult = LocationResult.extractResult(intent);
+            if(locationResult != null) {
+                List<Location> locations = locationResult.getLocations();
+                LocationResultHelper locationResultHelper = new LocationResultHelper(
+                        context, locations);
+                // Save the location data to SharedPreferences.
+                locationResultHelper.saveResults();
+                // Show notification with the location data.
+                locationResultHelper.showNotification();
+                Log.i(TAG, LocationResultHelper.getSavedLocationResult(context));
+            }
+        }
     }
 }
