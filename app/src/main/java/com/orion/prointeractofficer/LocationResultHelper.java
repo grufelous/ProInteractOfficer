@@ -29,8 +29,9 @@ public class LocationResultHelper {
         mContext = context;
         mLocations = locations;
 
-        NotificationChannel channel = new NotificationChannel(PRIMARY_CHANNEL,
-                context.getString("Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
+        CharSequence name = PRIMARY_CHANNEL;
+        NotificationChannel channel = new NotificationChannel("notifChannelId", name, NotificationManager.IMPORTANCE_DEFAULT);
+                //context.getString("Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
         channel.setLightColor(Color.GREEN);
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         getNotificationManager().createNotificationChannel(channel);

@@ -15,7 +15,7 @@ public class LocationUpdatesBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent == null) {
+        if(intent != null) {
             LocationResult locationResult = LocationResult.extractResult(intent);
             if(locationResult != null) {
                 List<Location> locations = locationResult.getLocations();
