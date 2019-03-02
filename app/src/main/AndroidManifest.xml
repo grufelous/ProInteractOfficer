@@ -16,20 +16,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <!-- Location Updates Broadcast Receiver -->
+        <receiver
+            android:name=".LocationUpdatesBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
         <!-- Geofence Broadcast Receiver -->
         <receiver
             android:name=".GeofenceBroadcastReceiver"
             android:enabled="true"
-            android:exported="true">
-        </receiver>
-
+            android:exported="true"></receiver>
         <!-- Geofence Transition Job Intent Service -->
         <service
             android:name=".GeofenceTransitionsJobIntentService"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" >
-        </service>
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
 
         <activity android:name=".GeofenceActivity" />
         <activity android:name=".MainActivity">
