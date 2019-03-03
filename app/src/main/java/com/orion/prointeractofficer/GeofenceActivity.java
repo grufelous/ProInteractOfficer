@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApi;
@@ -41,16 +42,24 @@ public class GeofenceActivity extends AppCompatActivity implements GoogleApiClie
     private GeofencingClient geofencingClient;
     private PendingIntent geofencePendingIntent;
     private List<Geofence> geofencesList;
+    TextView geoText;
+    Button setupBtn;
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 42;
     private static final int GEOFENCE_EXPIRATION_DURATION = 1000 * 60 * 60; // milliseconds * seconds * minutes
     private static final int GEOFENCE_LOITERTING_DELAY = 1000 * 30; // milliseconds * seconds
     private static final String TAG = GeofenceActivity.class.getSimpleName();
 
+    public void launchOfficer() {
+        Intent setupIntent = new Intent(this, OfficerAuthActivity.class);
+        startActivity(setupIntent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geofence);
+        setupBtn = findViewById(R.id.setupAct);
 
         // inits for location updates
         buildGoogleApiClient();
@@ -65,15 +74,29 @@ public class GeofenceActivity extends AppCompatActivity implements GoogleApiClie
         geofencesList = new ArrayList<>();
 
         // add geofence
-        geofencesList.add(getNewGeofence("originalGeofence", 37.422, -122.084, 100));
+        geofencesList.add(getNewGeofence("originalGeofence", 31.253072, 75.704507, 75));
 
         // create geofence instance
         geofencingClient = getGeofencingClientInstance();
 
         // add geofence to client
         addGeofence();
+
+        geoText = findViewById(R.id.geo);
+        setupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchOfficer();
+            }
+        });
     }
 
+    public void setIn() {
+        geoText.setText("IN");
+    }
+    public void setOut() {
+        geoText.setText("OUT");
+    }
     @Override
     protected void onStart() {
         super.onStart();

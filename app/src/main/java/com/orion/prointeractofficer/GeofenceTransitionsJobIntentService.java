@@ -8,10 +8,21 @@ import android.util.Log;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
 public class GeofenceTransitionsJobIntentService extends JobIntentService {
+    FirebaseUser user;
+    DatabaseReference rtDB;
+    public GeofenceTransitionsJobIntentService() {
+        super();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        rtDB = FirebaseDatabase.getInstance().getReference();
+    }
     private static final int JOB_ID = 215;
 
     private static final String TAG = GeofenceTransitionsJobIntentService.class.getSimpleName();
@@ -61,7 +72,8 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
     // TODO: handle these methods
     private void handleGeofenceExit() {
-        //rtDB.child("officer").child(user.getUid()).child("available").setValue(false);
+        rtDB.child("officer").child(user.getUid()).child("available").setValue(false);
+        rtDB.child("officer").child(user.getUid()).child("geo").setValue(false);
         Log.i(TAG, "handleGeofenceExit: ");
     }
 
@@ -70,6 +82,8 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
     }
 
     private void handleGeofenceEntry() {
+        rtDB.child("officer").child(user.getUid()).child("available").setValue(true);
+        rtDB.child("officer").child(user.getUid()).child("geo").setValue(true);
         Log.i(TAG, "handleGeofenceEntry: ");
     }
 }

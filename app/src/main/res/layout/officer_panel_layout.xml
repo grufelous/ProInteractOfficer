@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/officerPanelLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp"
+
+    tools:context=".OfficerAuthActivity">
+    <TextView
+        android:id="@+id/onlineAvail"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="16dp"
+        />
+
+    <!--<ImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="146dp"
+        android:layout_height="146dp"
+        android:layout_marginTop="32dp"
+        />-->
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="4dp"
+        android:textSize="24sp"
+        android:text="Name"
+        />
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textSize="18sp"
+        android:textFontWeight="300"
+        android:text="Title"
+        android:layout_below="@id/nameView"/>
+    <TextView
+        android:id="@+id/departmentView"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_below="@id/titleView"
+        android:text="Department"/>
+    <ImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profileImage"
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginStart="150dp"
+        android:layout_toEndOf="@id/nameView" />
+    <View
+        android:id="@+id/profileViewDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/departmentView"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/phoneView"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_below="@id/profileViewDivider"
+        />
+    <TextView
+        android:id="@+id/aboutView"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_below="@id/phoneView"
+        />
+
+    <Switch
+        android:id="@+id/availableCampusSwitch"
+        android:text="Availability in campus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aboutView"/>
+    <Switch
+        android:id="@+id/availableOfficeSwitch"
+        android:text="Availability in office"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/availableCampusSwitch"
+        android:paddingTop="8dp"/>
+    <TextView
+        android:id="@+id/availView"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_below="@id/availableOfficeSwitch"
+        />
+
+</RelativeLayout>

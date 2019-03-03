@@ -94,7 +94,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        main_layout = findViewById(R.id.main_layout);
+        Intent geoFenceIntent = new Intent(this, GeofenceActivity.class);
+        //Log.d(TAG, "launchSetup: launching geof activity");
+        startActivity(geoFenceIntent);
+
+        /*main_layout = findViewById(R.id.main_layout);
 
         letStartBtn = findViewById(R.id.launchLoginBtn);
         listOfUsers = findViewById(R.id.listOfUsers);
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "launchSetup: launching next activity");
 
             startActivity(authIntent);
-        }
+        }*/
 
     }
 }

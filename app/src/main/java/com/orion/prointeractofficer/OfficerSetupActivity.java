@@ -43,7 +43,7 @@ import java.io.InputStream;
 public class OfficerSetupActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private DatabaseReference rtDB;
+    private DatabaseReference rtDB, userDB;
     private FirebaseStorage storage;
     EditText nameInput, aboutTextInputField, titleTextInputField, phoneNumberInputField;
     TextView setupIntroText;
@@ -66,6 +66,9 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         rtDB.child("officer").child(user.getUid()).child("contact").setValue(phoneNumberInputField.getText().toString());
         rtDB.child("officer").child(user.getUid()).child("title").setValue(titleTextInputField.getText().toString());
         rtDB.child("officer").child(user.getUid()).child("about").setValue(aboutTextInputField.getText().toString());
+
+        Intent launchPanel = new Intent(this, OfficerPanel.class);
+        startActivity(launchPanel);
     }
 
     private final int SELECT_PHOTO = 1;
@@ -82,6 +85,7 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         titleTextInputField = findViewById(R.id.titleTextInputField);
         updateProfileBtn = findViewById(R.id.updateProfileBtn);
         availabilitySwitch = findViewById(R.id.availableSwitch);
+
         //ArrayList<String> skillsList = new ArrayList<String>();
         //skillListAdapter = new ArrayAdapter<String>(this, R.layout.skill_row, skillsList);
 
@@ -91,6 +95,25 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         user = mAuth.getCurrentUser();
         rtDB = FirebaseDatabase.getInstance().getReference();
         storage = FirebaseStorage.getInstance();
+
+        userDB = rtDB.child("officer").child(user.getUid());
+        /*ValueEventListener officerData = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userDB.child("name");
+                userDB.child("contact");
+                userDB.child("title");
+                userDB.child("about");
+                userDB.child("name");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };*/
+
+
 
         circularProfileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,9 +145,9 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
             }
         });
 
-        DatabaseReference availabilityReference = rtDB.child("officer").child(user.getUid()).child("available");
+        final DatabaseReference availabilityReference = rtDB.child("officer").child(user.getUid()).child("available");
 
-        availabilityReference.addValueEventListener(new ValueEventListener() {
+        /*availabilityReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d("AVAILEDIT", "onDataChange: " + dataSnapshot.getValue());
@@ -141,9 +164,12 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         availabilitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                rtDB.child("officer").child(user.getUid()).child("available").setValue(isChecked);
+                if(buttonView.isPressed()) {
+                    Log.d("AVAILEDIT", "onCheckedChanged: user press changed to " + isChecked);
+                    availabilityReference.setValue(isChecked);
+                }
             }
-        });
+        });*/
     }
     //image upload result
     @Override
