@@ -31,7 +31,7 @@
         android:layout_marginTop="48dp"
         android:layout_marginStart="4dp"
         android:textSize="24sp"
-        android:text="Name"
+        android:text="Aneesh"
         />
     <TextView
         android:id="@+id/titleView"
@@ -40,7 +40,7 @@
         android:layout_marginStart="4dp"
         android:textSize="18sp"
         android:textFontWeight="300"
-        android:text="Title"
+        android:text="Head"
         android:layout_below="@id/nameView"/>
     <TextView
         android:id="@+id/departmentView"
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_below="@id/titleView"
-        android:text="Department"/>
+        android:text=""/>
     <ImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profileImage"
@@ -65,7 +65,22 @@
         android:layout_below="@id/departmentView"
         android:background="?android:attr/listDivider" />
 
-    <TextView
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/makeAvlBtn"
+        android:layout_below="@id/profileViewDivider"
+        android:text="Make me available"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/makeUnavlBtn"
+        android:text="Make me unavailable"
+        android:layout_below="@id/profileViewDivider"
+        android:layout_toEndOf="@id/makeAvlBtn"/>
+
+    <!--<TextView
         android:id="@+id/phoneView"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -79,9 +94,9 @@
         android:layout_marginTop="48dp"
         android:layout_marginStart="16dp"
         android:layout_below="@id/phoneView"
-        />
+        />-->
 
-    <Switch
+    <!--<Switch
         android:id="@+id/availableCampusSwitch"
         android:text="Availability in campus"
         android:layout_width="match_parent"
@@ -101,6 +116,6 @@
         android:layout_marginTop="48dp"
         android:layout_marginStart="16dp"
         android:layout_below="@id/availableOfficeSwitch"
-        />
+        />-->
 
 </RelativeLayout>

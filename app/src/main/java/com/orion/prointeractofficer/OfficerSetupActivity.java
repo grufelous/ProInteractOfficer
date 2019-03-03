@@ -67,8 +67,8 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         rtDB.child("officer").child(user.getUid()).child("title").setValue(titleTextInputField.getText().toString());
         rtDB.child("officer").child(user.getUid()).child("about").setValue(aboutTextInputField.getText().toString());
 
-        Intent launchPanel = new Intent(this, OfficerPanel.class);
-        startActivity(launchPanel);
+        Intent launchBoard = new Intent(this, PanelBlank.class);
+        startActivity(launchBoard);
     }
 
     private final int SELECT_PHOTO = 1;

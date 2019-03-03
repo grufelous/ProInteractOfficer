@@ -108,5 +108,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_panel_blank">PanelBlank</string>
 
 </resources>

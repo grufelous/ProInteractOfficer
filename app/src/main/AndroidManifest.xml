@@ -16,10 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".PanelBlank"
+            android:label="@string/title_activity_panel_blank"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <!-- Location Updates Broadcast Receiver -->
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- Location Updates Broadcast Receiver -->
         <receiver
             android:name=".LocationUpdatesBroadcastReceiver"
             android:enabled="true"
@@ -47,13 +50,11 @@
         </activity>
         <activity
             android:name=".OfficerAuthActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".OfficerSetupActivity"
-            android:label="Edit profile"></activity>
-        <activity
-            android:name=".OfficerPanel"
-            android:label="Home"></activity>
+            android:label="Edit profile" />
+        <activity android:name=".OfficerPanel" />
     </application>
 
 </manifest>

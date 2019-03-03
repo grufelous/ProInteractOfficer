@@ -33,7 +33,7 @@ dependencies {
     //implementation "com.google.android.gms:play-services-basement:15.0.1"
     implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
     /** may use older version to avoid Error: The library com.google.android.gms:play-services-basement is being requested by various other libraries at [[15.0.1,15.0.1]], but resolves to 16.1.0. Disable the plugin and check your dependencies tree using ./gradlew :app:dependencies.
-        mixed results*/
+     mixed results*/
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.firebase:firebase-database:16.0.6'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
@@ -45,7 +45,6 @@ dependencies {
 
     // FirebaseUI for Cloud Firestore
     //implementation 'com.firebaseui:firebase-ui-firestore:4.3.1'
-
 
     //cicular imageview
     implementation 'de.hdodenhof:circleimageview:3.0.0'
