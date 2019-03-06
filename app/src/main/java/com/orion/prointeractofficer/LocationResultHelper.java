@@ -12,6 +12,11 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +31,9 @@ public class LocationResultHelper {
     private List<Location> mLocations;
     private NotificationManager mNotificationManager;
 
+    private FirebaseUser user;
+    private DatabaseReference userLocDB;
+
     LocationResultHelper(Context context, List<Location> locations) {
         mContext = context;
         mLocations = locations;
@@ -38,6 +46,16 @@ public class LocationResultHelper {
         channel.setLightColor(Color.GREEN);
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         getNotificationManager().createNotificationChannel(channel);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        userLocDB = FirebaseDatabase.getInstance().getReference().child("officer").child(user.getUid()).child("loc");
+        double lat = mLocations.get(mLocations.size()-1).getLatitude();
+        double lon = mLocations.get(mLocations.size()-1).getLongitude();
+        userLocDB.child("lat").setValue(lat);
+        userLocDB.child("lon").setValue(lon);
+        Log.d("YOLO", "LocationResultHelper: " + lat + ", " + lon);
+
     }
 
     /**

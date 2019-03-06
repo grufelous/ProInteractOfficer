@@ -76,30 +76,41 @@ public class MainActivity extends AppCompatActivity {
     }
     public void launchAuthActivity() {
         Intent authIntent = new Intent(this, OfficerAuthActivity.class);
-        Log.d(TAG, "launchAuthActivity: launching next activity");
+        Log.d(TAG, "launchAuthActivity: launching authentication activity");
         startActivity(authIntent);
     }
+
+    public void launchPanelActivity() {
+        Intent panelIntent = new Intent(this, PanelBlank.class);
+        Log.d(TAG, "launchAuthActivity: launching panel activity");
+        startActivity(panelIntent);
+    }
+
     private FirebaseAuth mAuth;
     private DatabaseReference db;
 
-    private void readUserList(Map<String, Object> users) {
+    /*private void readUserList(Map<String, Object> users) {
         for(Map.Entry<String, Object> e: users.entrySet()) {
             Map user = (Map) e.getValue();
             Log.d("USER", "readUserList: " + user.get("about").toString());
         }
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //launch geofenceact
+        /*Intent geoFenceIntent = new Intent(this, GeofenceActivity.class);
+        startActivity(geoFenceIntent);*/
+
         main_layout = findViewById(R.id.main_layout);
 
         letStartBtn = findViewById(R.id.launchLoginBtn);
         listOfUsers = findViewById(R.id.listOfUsers);
 
-        db = FirebaseDatabase.getInstance().getReference();
+        /*db = FirebaseDatabase.getInstance().getReference();
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -112,10 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        Log.d("FBDB", "onCreate: " + db.child("officer").toString());
+        Log.d("FBDB", "onCreate: " + db.child("officer").toString());*/
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-            //Snackbar.make(main_layout, "Not logged in", Snackbar.LENGTH_SHORT).show();
-            //signIn();
+
             launchAuthActivity();
 
         } else {
@@ -124,9 +134,9 @@ public class MainActivity extends AppCompatActivity {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             Log.d(TAG, "onCreate: " + user.getDisplayName());
             Intent authIntent = new Intent(this, OfficerSetupActivity.class);
-            Log.d(TAG, "launchSetup: launching next activity");
+            Log.d(TAG, "launchSetup: launching panel activity");
 
-            startActivity(authIntent);
+            launchPanelActivity();
         }
 
     }

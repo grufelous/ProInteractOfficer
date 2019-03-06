@@ -9,43 +9,73 @@
     android:paddingRight="32dp"
     tools:context=".OfficerAuthActivity">
 
-    <EditText
-        android:id="@+id/emailInputField"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/passwordInputField"
-        android:layout_width="300dp"
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/one"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/emailInputField"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        android:layout_marginTop="50dp"
+        app:errorEnabled="true">
+        <android.support.design.widget.TextInputEditText
+
+            android:hint="Email"
+            android:id="@+id/emailInputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"/>
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/two"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:errorEnabled="true"
+        android:layout_below="@id/one">
+        <android.support.design.widget.TextInputEditText
+
+            android:hint="Password"
+            android:id="@+id/passwordInputField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+
+            android:ems="10"
+            android:inputType="textPassword"/>
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/signupBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passwordInputField"
+        android:layout_below="@id/two"
         android:layout_centerHorizontal="true"
-        android:onClick="signUp"
-        android:text="@string/signup_btn" />
+        android:text="@string/signup_btn"
+        android:textSize="15dp"
+        android:padding="9dp"
+
+        android:background="@drawable/bcc"
+        android:layout_marginRight="10dp"/>
+    <!--android:onClick="signUp"-->
+
 
     <Button
         android:id="@+id/loginBtn"
+        android:padding="9dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passwordInputField"
+        android:textSize="15dp"
+        android:layout_below="@id/two"
         android:layout_centerHorizontal="true"
         android:layout_toEndOf="@id/signupBtn"
-        android:onClick="signIn"
-        android:text="@string/login_btn" />
+        android:text="@string/login_btn"
+        android:background="@drawable/bcc"/>
+    <!--android:onClick="signIn"-->
+
 
 </RelativeLayout>

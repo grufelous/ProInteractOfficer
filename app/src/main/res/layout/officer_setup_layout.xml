@@ -16,7 +16,7 @@
         android:layout_marginTop="48dp"
         android:layout_marginStart="16dp"
         android:layout_toEndOf="@id/profile_image"
-        android:layout_below="@id/secondNameInputField"
+        android:layout_below="@id/nameInputField"
         />
 
     <!--<de.hdodenhof.circleimageview.CircleImageView
@@ -35,48 +35,36 @@
         android:layout_height="146dp"
         android:layout_marginTop="32dp"
         android:src="@drawable/profile" />
-
-
     <EditText
-        android:id="@+id/firstNameInputField"
+        android:id="@+id/nameInputField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/first_name_txt"
+        android:hint="@string/name_txt"
         android:layout_toEndOf="@id/profile_image"
         android:width="186dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="28dp"
-        />
-    <EditText
-        android:id="@+id/secondNameInputField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/second_name_txt"
-        android:width="186dp"
-        android:layout_marginStart="16dp"
-        android:layout_below="@id/firstNameInputField"
-        android:layout_toEndOf="@id/profile_image"
         />
     <EditText
         android:id="@+id/phoneNumberInputField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Contact number"
+        android:hint="@string/phone_txt"
         android:ems="10"
         android:width="186dp"
         android:inputType="phone"
         android:layout_marginStart="16dp"
-        android:layout_below="@id/secondNameInputField"
+        android:layout_below="@id/nameInputField"
         android:layout_toEndOf="@id/profile_image"
         />
+
     <Button
         android:id="@+id/updateProfileBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="28dp"
         android:layout_centerHorizontal="true"
-        android:onClick="updateOfficerInfo"
+        android:layout_marginTop="28dp"
         android:text="@string/update_btn" />
     <View
         android:id="@+id/profileDivider"
@@ -118,8 +106,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_below="@id/departmentSpinner"
-        android:lines="3"
-        android:maxLines="5"
+        android:lines="2"
+        android:maxLines="3"
         android:tooltipText="About you"
         />
     <!--<ListView
@@ -130,22 +118,5 @@
         android:layout_marginTop="28dp"
         android:layout_above="@id/updateProfileBtn">
     </ListView>-->
-    <TextView
-        android:layout_below="@id/aboutTextInputField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/skillListText"
-        />
-    <Switch
-        android:id="@+id/interactionSwitch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enable interactions"
-        android:layout_below="@id/aboutTextInputField"/>
-    <Switch
-        android:id="@+id/availableSwitch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Set as available"
-        android:layout_below="@id/interactionSwitch"/>
+
 </RelativeLayout>

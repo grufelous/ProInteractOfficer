@@ -3,27 +3,28 @@ package com.orion.prointeractofficer;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApi;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -32,13 +33,25 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GeofenceActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+public class PanelBlank extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
+
+
+    Button makeAvl, munavl;
+    FirebaseUser user;
+    DatabaseReference rtDB, userDirDB, availDB;
+
     private GeofencingClient geofencingClient;
     private PendingIntent geofencePendingIntent;
     private List<Geofence> geofencesList;
@@ -55,7 +68,18 @@ public class GeofenceActivity extends AppCompatActivity implements GoogleApiClie
         startActivity(setupIntent);
     }
 
-    @Override
+
+
+    public void tt(View view){
+        Snackbar.make(view, "You've been marked Available", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    public void ttt(View view){
+        Toast.makeText(this, "You'vve been marked Unavailable", Toast.LENGTH_SHORT).show();
+    }
+
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_geofence);
@@ -89,7 +113,7 @@ public class GeofenceActivity extends AppCompatActivity implements GoogleApiClie
                 launchOfficer();
             }
         });
-    }
+    }*/
 
     @Override
     protected void onStart() {
@@ -286,6 +310,7 @@ public class GeofenceActivity extends AppCompatActivity implements GoogleApiClie
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(TAG, "onConnected: GoogleApiClient connected");
+        requestLocationUpdates();
     }
 
     @Override
@@ -342,4 +367,104 @@ public class GeofenceActivity extends AppCompatActivity implements GoogleApiClie
 //        Log.e(TAG,status + "");
         removeLocationUpdates(view);
     }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+        setContentView(R.layout.activity_geofence);
+        setupBtn = findViewById(R.id.setupAct);
+
+        // inits for location updates
+        buildGoogleApiClient();
+
+        // log information that intent is created
+        Log.i(TAG, "onCreate: GeofenceActivity loaded");
+
+        // set intent to null
+        geofencePendingIntent = null;
+
+        // initialize geofence list
+        geofencesList = new ArrayList<>();
+
+        // add geofence
+        geofencesList.add(getNewGeofence("originalGeofence", 31.253072, 75.704507, 75));
+
+        // create geofence instance
+        geofencingClient = getGeofencingClientInstance();
+
+        // add geofence to client
+        addGeofence();
+
+        geoText = findViewById(R.id.geo);
+        setupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchOfficer();
+            }
+        });
+
+
+        //TextView name = findViewById(R.id.hi);
+        //name.setText("Hi, " + username);
+
+        setContentView(R.layout.activity_panel_blank);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        makeAvl = findViewById(R.id.makeaOffAvl);
+        munavl = findViewById(R.id.makeaOffunavl);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        String username = user.getDisplayName();
+        rtDB = FirebaseDatabase.getInstance().getReference();
+        userDirDB = rtDB.child("officer").child(user.getUid());
+
+
+        availDB = userDirDB.child("available");
+        Button fabi = (Button)findViewById(R.id.makeaOffAvl);
+        fabi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "TRRYYYYY", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+
+        makeAvl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                availDB.setValue(true);
+            }
+        });
+
+        makeAvl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                availDB.setValue(true);
+                Snackbar.make(v, "You've been marked available.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        munavl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                availDB.setValue(false);
+            }
+        });
+
+        munavl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                availDB.setValue(false);
+                Snackbar.make(v, "You've been marked unavailable.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+    }
+
 }
