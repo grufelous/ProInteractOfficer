@@ -49,7 +49,6 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
     TextView setupIntroText;
     Spinner departmentSpinner;
     Button updateProfileBtn;
-    Switch availabilitySwitch;
     /*Circle*/ ImageView circularProfileImageView;
 
     protected void updateOfficerInfo(/*View view*/) {
@@ -84,7 +83,7 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         departmentSpinner = findViewById(R.id.departmentSpinner);
         titleTextInputField = findViewById(R.id.titleTextInputField);
         updateProfileBtn = findViewById(R.id.updateProfileBtn);
-        availabilitySwitch = findViewById(R.id.availableSwitch);
+
 
         //ArrayList<String> skillsList = new ArrayList<String>();
         //skillListAdapter = new ArrayAdapter<String>(this, R.layout.skill_row, skillsList);
@@ -97,7 +96,7 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
         storage = FirebaseStorage.getInstance();
 
         userDB = rtDB.child("officer").child(user.getUid());
-        /*ValueEventListener officerData = new ValueEventListener() {
+        ValueEventListener officerData = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userDB.child("name");
@@ -111,7 +110,8 @@ public class OfficerSetupActivity extends AppCompatActivity implements AdapterVi
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        };*/
+        };
+        //userDB.addListenerForSingleValueEvent(officerData)
 
 
 

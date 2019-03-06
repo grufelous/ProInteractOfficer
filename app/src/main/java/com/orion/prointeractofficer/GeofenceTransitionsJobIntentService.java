@@ -73,7 +73,7 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
     // TODO: handle these methods
     private void handleGeofenceExit() {
         rtDB.child("officer").child(user.getUid()).child("available").setValue(false);
-        rtDB.child("officer").child(user.getUid()).child("geo").setValue(false);
+        //rtDB.child("officer").child(user.getUid()).child("last_time").setValue(System.currentTimeMillis());
         Log.i(TAG, "handleGeofenceExit: ");
     }
 
@@ -83,7 +83,7 @@ public class GeofenceTransitionsJobIntentService extends JobIntentService {
 
     private void handleGeofenceEntry() {
         rtDB.child("officer").child(user.getUid()).child("available").setValue(true);
-        rtDB.child("officer").child(user.getUid()).child("geo").setValue(true);
+        //rtDB.child("officer").child(user.getUid()).child("geo").setValue(true);
         Log.i(TAG, "handleGeofenceEntry: ");
     }
 }

@@ -91,12 +91,6 @@ public class GeofenceActivity extends AppCompatActivity implements GoogleApiClie
         });
     }
 
-    public void setIn() {
-        geoText.setText("IN");
-    }
-    public void setOut() {
-        geoText.setText("OUT");
-    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -330,20 +324,22 @@ public class GeofenceActivity extends AppCompatActivity implements GoogleApiClie
     }
 
     public void startService(View view) {
-        PackageManager pm  = this.getPackageManager();
-        ComponentName componentName = new ComponentName(this, LocationUpdatesBroadcastReceiver.class);
-        int status = getApplicationContext().getPackageManager().getComponentEnabledSetting(componentName);
-        pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);
-        Log.e(TAG,status + "");
+//        PackageManager pm  = this.getPackageManager();
+//        ComponentName componentName = new ComponentName(this, LocationUpdatesBroadcastReceiver.class);
+//        int status = getApplicationContext().getPackageManager().getComponentEnabledSetting(componentName);
+//        pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+//                PackageManager.DONT_KILL_APP);
+//        Log.e(TAG,status + "");
+        requestLocationUpdates();
     }
 
     public void stopService(View view) {
-        PackageManager pm  = this.getPackageManager();
-        ComponentName componentName = new ComponentName(this, LocationUpdatesBroadcastReceiver.class);
-        int status = getApplicationContext().getPackageManager().getComponentEnabledSetting(componentName);
-        pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        Log.e(TAG,status + "");
+//        PackageManager pm  = this.getPackageManager();
+//        ComponentName componentName = new ComponentName(this, LocationUpdatesBroadcastReceiver.class);
+//        int status = getApplicationContext().getPackageManager().getComponentEnabledSetting(componentName);
+//        pm.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+//                PackageManager.DONT_KILL_APP);
+//        Log.e(TAG,status + "");
+        removeLocationUpdates(view);
     }
 }

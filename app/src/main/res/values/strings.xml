@@ -7,8 +7,8 @@
 
 
     <string name="launch_login_button_txt">Let\'s Start</string>
-    <string name="login_btn">Login</string>
-    <string name="signup_btn">Create account</string>
+    <string name="login_btn">LOGIN</string>
+    <string name="signup_btn">CREATE ACCOUNT</string>
     <string name="name_txt">Name</string>
     <string name="phone_txt">Phone number</string>
     <string name="about_txt">Name</string>
@@ -109,6 +109,7 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_dashboard">Dashboard</string>
-    <string name="title_activity_panel_blank">PanelBlank</string>
+    <string name="title_activity_panel_blank">Availability Status</string>
+    <string name="title_activity_currentlocation">Map</string>
 
 </resources>
