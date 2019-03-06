@@ -1,0 +1,224 @@
+.h1 {
+    font-family:'Open Sans Condensed', 'Montserrat', 'Lato', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 3%;
+}
+
+.navbar-dark {
+    background: #000000!important;
+}
+
+#navbarSupportedContent a {
+    font-family:'Roboto Condensed', 'Montserrat', 'Lato', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;   
+}
+
+.navbar_logo {
+    width: 45px;
+}
+ 
+
+/* #particle-js {
+    background: #000;
+    height: 100%;
+} */
+/**********HEADER******************************/
+
+header {
+    background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.5)) ,url('../assets/img/mlbg.jpeg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+.custom_container {
+    width: 95%;
+}
+
+.sidenav_image {
+    width: 50px;
+}
+
+nav ul li {
+    transition: background-color 0.3s;
+}
+
+nav ul li:hover  {
+    background-color: #4d4d4d;
+}
+
+/************HEADER END*************************/
+
+/****************MAIN***********************/
+
+#hero_heading {
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    font-size: 350%;
+    font-weight: lighter;
+    text-transform: uppercase;
+    
+}
+
+
+
+
+.hero_heading_block {
+    position: absolute;
+    top:50%;
+    transform: translate(0%, -50%);
+    padding-left: 2%;
+}
+
+.subheading {
+    color: #fff;
+}
+#callForPapers {
+    /* background:linear-gradient(rgba(0,0,0,1), rgba(0,0,0,1)) ; */
+    background-size: cover;
+    background-position: center;
+    padding-top: 3%;
+    padding-bottom: 5%;
+    height: 100%;
+}
+
+hr {
+    width: 15%;
+    border: 1px solid rgb(1, 0, 58);
+    margin-bottom: 1em;
+    margin-top: 1em;
+    border-radius: 200px;
+}
+.content_body {
+    padding-top: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+    padding-bottom: 1%;
+}
+
+.callForPapersText {
+    font-size: 120%;
+    text-align: justify;
+}
+
+.text_center {
+    text-align: center;
+}
+
+.text_white {
+    color: #fff;
+}
+
+.illustration_image {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding-bottom: 5%;
+}
+
+.ml_topics li {
+    padding: 0.5em 0;
+}
+
+
+#impDates {
+    height: 100vh;
+    background-color: #717171;
+}
+
+#progCommittee {
+    height: 100vh;
+    background-color: #464646
+}
+
+#orgCommittee {
+    height: 100vh;
+    background-color: #746868;
+}
+
+/* #reg {
+    height: 100vh;
+    background-color: #440000;
+} */
+
+#venue {
+    height: 100vh;
+    background-color: #434b41;
+}
+
+/***************MAIN END***********************/
+
+/***************FOOTER*****************************/
+
+/***************FOOTER END***************************/
+
+/* MEDIA QUERIES */
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 150%;
+        padding-top: 15%;
+        text-align: center;
+        color: white
+
+    }
+
+    header {
+        min-height: 100vh;
+        text-align: center;
+    }
+
+    .callForPapersText {
+        font-size: 90%;
+    }
+
+    #hero_heading {
+        font-size: 150%;
+    }
+
+    .content_body {
+        padding-top: 12%;
+    }
+
+    .callForPapersText {
+        font-size: 100%;
+    }
+
+    .subheading {
+        font-size: 95%;
+    }
+
+    .topic_card {
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    .papers_heading {
+        padding-top: 2%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .papers_heading {
+        padding-top: 2%;
+    } 
+    
+    .content_body {
+        padding-top: 5%;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .content_body {
+        padding-top: 1%;
+    }
+
+    .collapsible {
+        width: 70%;
+        margin-left: 15%;
+        margin-right: 15%;
+    }
+}
